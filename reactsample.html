@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="stylesheet.css" rel="stylesheet">
+    <link href="search.css" rel="stylesheet">
+    <link href="compatibility.css" rel="stylesheet">
+    <script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type = "text/javascript" src = "myjavascript.js"></script>
+    <script src="https://unpkg.com/react@15.3.2/dist/react.js"></script>
+    <script src="https://unpkg.com/react-dom@15.3.2/dist/react-dom.js"></script>
+    <script src="https://unpkg.com/babel-core@5.8.38/browser.min.js"></script>
+</head>
+<body>
+<script type = "text/babel">
+    //starting point: https://facebook.github.io/react/docs/thinking-in-react.html
+    var Results = React.createClass({
+        render: function() {
+            return (
+                    <tr>
+                        <td>{this.props.id}</td>
+                        <td>{this.props.image}</td>
+                        <td>{this.props.description}</td>
+                        <td>{this.props.price}</td>
+                        <td>Sample Seller Contact Info</td>
+                    </tr>
+            );
+        }
+    });
+
+    var ActiveFilters = React.createClass({
+        render: function() {
+            return (
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td><div className = "activeFilterItem">filter 1<div className = "activeFilterDeselecter">x</div></div></td>
+                            <td><div className = "activeFilterItem">filter 2<div className = "activeFilterDeselecter">x</div></div></td>
+                            <td><div className = "activeFilterItem">filter 3<div className = "activeFilterDeselecter">x</div></div></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+            );
+        }
+    });
+
+    var Filters = React.createClass({
+        render: function() {
+            return (
+                    <table>
+                        <thead>
+                        <tr><td>Category</td><td>Class</td><td>Professor</td><td>Maximum Price</td><td>Date</td></tr>
+                        </thead>
+                        <tbody><tr>
+                            <td><select name="searchTermSelection">
+                                <option name = "category" value="all">All</option>
+                                <option name = "category" value="textbook">Textbook</option>
+                                <option name = "category" value="classNotes">Class Notes</option>
+                                <option name = "category" value="classMaterials">Class Materials</option>
+                                <option name = "category" value="misc">Miscellaneous</option>
+                            </select></td>
+                            <td><input className = "input" type = "text" placeholder = "Search terms" id = "classSearchTermInput"/></td>
+                            <td><input className = "input" type = "text" placeholder = "Search terms" id = "professorSearchTermInput"/></td>
+                            <td><input type="range" value="50" min="0" max="500" id="priceSearchTermInput" /><div id = "maxPriceDisplay"></div></td>
+                            <td><input className = "input" type = "text" placeholder = "Search terms" id = "dateSearchTermInput"/></td>
+                        </tr>
+                        </tbody>
+                    </table>
+            );
+        }
+    });
+
+    var SearchResultsTable = React.createClass({
+        render: function() {
+            var rows = [];
+            this.props.items.forEach(function(item) {
+                //if (item.description === "SEARCH KEYWORDS") {
+                    rows.push(<Results id = {item.id} image = {item.image} description={item.description} price={item.price} key={item.id}/>);
+                //}
+            });
+            return (
+                    <div className = "search" data-list-size="4">
+                        <table className = "searchResultTable">
+                            <thead>
+                            <tr><th>ID</th><th>Image</th><th>Description</th><th>Price</th><th>Seller Contact</th></tr>
+                            </thead>
+                            <tbody>{rows}</tbody>
+                        </table>
+                    </div>
+            );
+        }
+    });
+
+
+    var SearchBox = React.createClass({
+        render: function(){
+            return (
+                    <div className = "search" data-list-size="4">
+                        <table className = "searchBoxTable">
+                            <tbody>
+                            <tr>
+                                <td><input className = "input" type = "text" placeholder = "Search by keywords" id = "searchBox"/></td>
+                                <td><button className = "button" id = "filterButton">Filters</button></td>
+                                <td><button className = "button" id = "searchButton">Search</button></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div id = "searchFilters">
+                            <Filters/>
+                            <ActiveFilters/>
+                        </div>
+                    </div>
+            );
+        }
+    });
+
+    var FilterableSearchTable = React.createClass({
+        render: function() {
+            return (
+                    <div>
+                        <SearchBox />
+                        <SearchResultsTable items={this.props.items}/>
+                    </div>
+            );
+        }
+    });
+
+
+    var ITEMS = [{id: "1", image: "IMAGE1.jpg", description: "Research Methods and Statistics - 5th edition ISBN13: 978-1305257795", price: "$144.48"},
+        {id: "2", image: "IMAGE2.jpg", description: "Principles of Anatomy and Physiology -Text Only - 14th edition\nISBN13: 978-1118345009", price: "$150.96"},
+        {id: "3", image: "IMAGE3.jpg", description: "Power System Analysis and Design - 6th edition\nISBN13: 978-1305632134", price: "$148.49"},
+        {id: "4", image: "IMAGE4.jpg", description: "Anatomy and Physiology - With Mastering A and P - 6th edition\nISBN13: 978-0134201665", price: "$249.90"},
+        {id: "5", image: "IMAGE5.jpg", description: "sample description", price: "$249.90"}];
+
+
+    ReactDOM.render(
+            <FilterableSearchTable items={ITEMS} />,
+            document.getElementById('container')
+    );
+</script>
+<nav class = "menu">
+    <ul>
+        <li class = "left" id = "homeLink">Home</li>
+        <li class = "left" id = "searchLink">Search</li>
+        <li class = "left" id = "postLink">Post Item</li>
+        <li class = "rightMenuLinks" id = "logInLink">Log In</li>
+        <li class = "rightMenuLinks" id = "signUpLink">Sign Up</li>
+        <li id = "logOut">Log Out</li>
+        <!--last li element to be defined as username after successful login-->
+        <li><span id = "userName"></span></li>
+    </ul>
+</nav>
+<div class = "mainHeading">
+    <h1 class = "title">GMUExchange</h1>
+    <!--to be defined by home view's JS-->
+    <h2 class = "subtitle"></h2>
+    <!--Quick log in access-->
+    <table class = "quickLogin">
+        <tr>
+            <th><input type = "email" placeholder = "GMU e-mail" id = "quickLoginEmail"/></th>
+            <th><input type = "password" placeholder = "password" id = "quickLoginPassword"/></th>
+        </tr>
+        <tr>
+            <td colspan = "2"><button class = "button" id = "quickLoginButton">Log In</button></td>
+        </tr>
+    </table>
+    <!--Image labeled for reuse-->
+    <img src="https://upload.wikimedia.org/wikipedia/commons/e/ea/An_aerial_view_of_the_Johnson_Center_at_dawn..jpg">
+</div>
+<div class = "sectionHeading">
+    <h1 class = "title">GMUExchange</h1>
+    <!--Subtitle to be defined by each view's JS-->
+    <h2 class = "subtitle"  id = "subtitle">Search</h2>
+    <!--Image labeled for reuse-->
+    <img src="https://upload.wikimedia.org/wikipedia/commons/e/ea/An_aerial_view_of_the_Johnson_Center_at_dawn..jpg">
+</div>
+<div id="container">
+    <!-- This element's contents will be replaced with your component. -->
+</div>
+</body>
+<footer class = "footer">
+    <h3>SWE 432</h3>
+    <p>Dayana Hudson</p>
+    <p>Ermal Dedej</p>
+    <p><a href="https://github.com/dayanahudson/GMUExchange/">GitHub</a></p>
+</footer>
+</html>     

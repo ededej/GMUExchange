@@ -78,42 +78,7 @@ li.left {
     transform: scale(1.1);
 }
 
-/*Search styling*/
-.search {
-    background-color: #f2f2f2;
-    padding: 15px;
-}
-.search #searchTerms {
-    text-align: center;
-    padding: 15px;
-    font-weight: bold; /*http://www.w3schools.com/cssref/pr_font_weight.asp*/
-}
-.search .button {
-    width: 25%;
-}
-.searchResultTable {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    width: 100%;
-    font-family: sans-serif;
-}
-.searchBoxTable {
-    width: 100%;
-}
-.search th {
-    background-color: green;
-    color: white;
-}
-.search th, td {
-    padding: 10px;
-}
-.searchResultTable tr:nth-child(odd){ /*http://www.w3schools.com/css/css_table.asp*/
-    background-color: #ffffcc;
-}
-input[type="text"]{
-    font-size: 17px;
-    width: 80%;
-}
+/*originally implemented for new item to be posted*/
 .newItem {
     display: none;
 }
@@ -123,10 +88,6 @@ input[type="text"]{
     padding: 10px;
 }
 
-/*Filter section styling*/
-.searchFilters {
-    padding-bottom: 20px;
-}
 /*Title, Subtitle, and Home Page login styling*/
 .title, .subtitle, .quickLogin{
     width: 100%;
@@ -165,9 +126,7 @@ input[type="email"], input[type="password"] {
 .creds .button {
     margin: auto 50%;
 }
-.searchBoxTable .button {
-    width: 100%;
-}
+
 .button:active {
     border: none;
     background-color: white;
@@ -183,7 +142,7 @@ input[type="email"], input[type="password"] {
     text-align: center;
     padding-top: 5px;
 }
-.bottomColumns .table, td{
+.bottomColumns .table, .bottomColumns .table .td{
     padding-bottom: 15px;
     padding-right: 15px;
     padding-left: 15px;
@@ -202,92 +161,4 @@ input[type="email"], input[type="password"] {
 .footer a {
     font-family: monospace;
     font-size: 20px;
-}
-
-/*Home Page - different displays based on size of window (corresponding to
-  device used)*/
-
-/*MOBILE AND PHABLETS*/
-@media screen { /*http://www.w3schools.com/cssref/css3_pr_mediaquery.asp http://mydevice.io/devices/*/
-    .mainHeading, .sectionHeading{
-        max-height: 150px;
-    }
-    .mainHeading .features h1 {
-        font-size: 25px;
-    }
-    .title {
-        top: 10%;
-        font-size: 30px;
-    }
-    .subtitle {
-        top: 40%;
-        font-size: 20px;
-    }
-    .quickLogin {
-        visibility: hidden;
-    }
-    .bottomColumns .table tr,td{ /*https://css-tricks.com/responsive-data-tables/*/
-        display: block;
-        text-align: left;
-    }
-}
-
-/*TABLET*/
-@media screen and (min-width: 480px){ /*max-height:800px http://www.w3schools.com/cssref/css3_pr_mediaquery.asp http://mydevice.io/devices/*/
-    .mainHeading, .sectionHeading {
-        max-height: 200px;
-    }
-    .title {
-        top: 10%;
-        font-size: 40px;
-    }
-    .subtitle {
-        top: 40%;
-        font-size: 30px;
-    }
-}
-/*COMPUTER: FRACTION OF A WINDOW*/
-@media screen and (min-width: 700px){
-    .mainHeading {
-        max-height: 390px;
-    }
-    .sectionHeading {
-        max-height: 250px;
-    }
-    /*.searchResultTable {
-        min-height: 20px;
-    }*/
-    .mainHeading .title {
-        top: 5%;
-        font-size: 50px;
-    }
-    .mainHeading .subtitle {
-        top: 25%;
-        font-size: 30px;
-    }
-    .quickLogin {
-        visibility: visible;
-        top: 55%;
-    }
-    .bottomColumns .table tr,td{
-        display: table-cell;
-        text-align: center;
-    }
-}
-/*COMPUTER: FULL SCREEN*/
-@media screen and (min-width: 1400px) { /*http://www.w3schools.com/cssref/css3_pr_mediaquery.asp*/
-    .mainHeading .title {
-        top: 0%;
-        font-size: 60px;
-    }
-    /*.searchResultTable {
-        min-height: 350px;
-    }*/
-    .mainHeading .subtitle {
-        top: 20%;
-        font-size: 40px;
-    }
-    .bottomColumns, .searchResultTable {
-        min-height: 290px;
-    }
 }
