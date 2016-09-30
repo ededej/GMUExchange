@@ -28,7 +28,7 @@
             );
         }
     });
-
+    /*
     var ActiveFilters = React.createClass({
         render: function() {
             return (
@@ -48,7 +48,7 @@
             );
         }
     });
-/*
+
     var Filters = React.createClass({
         handleFilterChange: function(){
             console.log("filter changed filterClassText: "+this.refs.filterClassTextInput.value);
@@ -118,7 +118,10 @@
             this.props.items.forEach(function(item) {
                 //console.log("filterClassText2: "+this.props.filterClassText);
                 console.log("filterKeywordText: "+this.props.filterKeywordText);
-                if ((this.props.filterKeywordText === item.id) || (this.props.filterClassText !== null && this.props.filterClassText === item.className)) {
+                var regex = new RegExp('.*'+(this.props.filterKeywordText).toLowerCase()+'.*');
+                var data = regex.exec((item.description).toLowerCase());
+                console.log("data"+data);
+                if ((data != null) || (this.props.filterClassText !== null && this.props.filterClassText === item.className)) {
                     rows.push(<Results id = {item.id} image = {item.image} description={item.description} price={item.price} key={item.id}/>);
                 }
             }.bind(this));
@@ -135,16 +138,29 @@
         }
     });
 
+/*Filter and Search button declaration; not needed since page automatically updates
+ <td><button
+ className = "button"
+ id = "filterButton"
+ >Filters</button></td>
+ <td><button
+ className = "button"
+ id = "searchButton"
+ >Search</button></td>
 
+Referencing filters
+ <div id = "searchFilters">
+ <Filters/>
+ </div>
+* */
     var SearchBox = React.createClass({
         handleSearchBoxChange: function() {
             console.log("search box changed filterKeywordText: "+this.refs.filterKeywordTextInput.value);
-            //console.log("search box changed filterClassText: "+this.refs.filterClassTextInput.value);
             this.props.onUserInput(
                     this.refs.filterKeywordTextInput.value,
-                    //this.refs.filterClassTextInput.value,
             );
         },
+        //To add after the last </table> tag: <ActiveFilters/>
         render: function(){
             return (
             <div className = "search" data-list-size="4">
@@ -160,58 +176,9 @@
                                 onChange={this.handleSearchBoxChange}
                                 id = "searchBox"
                         /></td>
-                        <td><button
-                                className = "button"
-                                id = "filterButton"
-                        >Filters</button></td>
-                        <td><button
-                                className = "button"
-                                id = "searchButton"
-                        >Search</button></td>
                     </tr>
                     </tbody>
                 </table>
-                <div id = "searchFilters">
-                    <table>
-                        <thead>
-                        <tr><td>Category</td><td>Class</td><td>Professor</td><td>Maximum Price</td><td>Date</td></tr>
-                        </thead>
-                        <tbody><tr>
-                            <td><select name="searchTermSelection">
-                                <option name = "category" value="all">All</option>
-                                <option name = "category" value="textbook">Textbook</option>
-                                <option name = "category" value="classNotes">Class Notes</option>
-                                <option name = "category" value="classMaterials">Class Materials</option>
-                                <option name = "category" value="misc">Miscellaneous</option>
-                            </select></td>
-                            <td><input
-                                    className = "input"
-                                    type = "text"
-                                    placeholder = "Search terms"
-                                    id = "classSearchTermInput"
-                            /></td>
-                            <td><input
-                                    className = "input"
-                                    type = "text"
-                                    placeholder = "Search terms"
-                                    id = "professorSearchTermInput"
-                            /></td>
-                            <td><input
-                                    type="range"
-                                    min="0"
-                                    max="10"
-                                    id="priceSearchTermInput"
-                            /><div id = "maxPriceDisplay">M.P.HERE</div></td>
-                            <td><input
-                                    className = "input"
-                                    type = "text"
-                                    placeholder = "Search terms"
-                                    id = "dateSearchTermInput"/></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <ActiveFilters/>
-                </div>
             </div>
             );
         }
@@ -266,13 +233,13 @@
     });
 
 
-    var ITEMS = [{id: "1", image: "IMAGE1.jpg", description: "Research Methods and Statistics - 5th edition ISBN13: 978-1305257795", price: "$144.48", category: "Textbook", className: "GEN 301", Professor: "Johnson", Date: "01/02/2016"},
-        {id: "2", image: "IMAGE2.jpg", description: "Principles of Anatomy and Physiology -Text Only - 14th edition\nISBN13: 978-1118345009", price: "$150.96", category: "Textbook", className: "PHYS 240", Professor: "Smith", Date: "05/02/2016"},
-        {id: "3", image: "IMAGE3.jpg", description: "Power System Analysis and Design - 6th edition\nISBN13: 978-1305632134", price: "$148.49", category: "Textbook", className: "GEN 301", Professor: "Marks", Date: "07/02/2016"},
-        {id: "4", image: "IMAGE4.jpg", description: "Anatomy and Physiology - With Mastering A and P - 6th edition\nISBN13: 978-0134201665", price: "$249.90", category: "Textbook", className: "PHYS 100", Professor: "Walker", Date: "08/02/2016"},
-        {id: "5", image: "IMAGE5.jpg", description: "Class notes for GEN 202", price: "$10.00", category: "ClassNotes", className: "GEN 301", Professor: "Johnson", Date: "01/02/2016"},
-        {id: "6", image: "IMAGE6.jpg", description: "Class materials for ECE 301", price: "$25.00", category: "ClassMaterials", className: "ECE 301", Professor: "Johnson", Date: "01/02/2016"},
-        {id: "7", image: "IMAGE7.jpg", description: "Desk and chair", price: "$40.00", category: "Misc", className: "NONE", Professor: "NONE", Date: "05/02/2016"},];
+    var ITEMS = [{id: "1", image: "IMAGE1.jpg", isbn: "978-1305257795", description: "Research Methods and Statistics - 5th edition", price: "$144.48", category: "Textbook", className: "GEN 301", Professor: "Johnson", Date: "01/02/2016"},
+        {id: "2", image: "IMAGE2.jpg", isbn: "978-1118345009", description: "Principles of Anatomy and Physiology -Text Only - 14th edition", price: "$150.96", category: "Textbook", className: "PHYS 240", Professor: "Smith", Date: "05/02/2016"},
+        {id: "3", image: "IMAGE3.jpg", isbn: "978-1305632134", description: "Power System Analysis and Design - 6th edition", price: "$148.49", category: "Textbook", className: "GEN 301", Professor: "Marks", Date: "07/02/2016"},
+        {id: "4", image: "IMAGE4.jpg", isbn: "978-0134201665", description: "Anatomy and Physiology - With Mastering A and P - 6th edition", price: "$249.90", category: "Textbook", className: "PHYS 100", Professor: "Walker", Date: "08/02/2016"},
+        {id: "5", image: "IMAGE5.jpg", isbn: null, description: "Class notes for GEN 202", price: "$10.00", category: "ClassNotes", className: "GEN 301", Professor: "Johnson", Date: "01/02/2016"},
+        {id: "6", image: "IMAGE6.jpg", isbn: null, description: "Class materials for ECE 301", price: "$25.00", category: "ClassMaterials", className: "ECE 301", Professor: "Johnson", Date: "01/02/2016"},
+        {id: "7", image: "IMAGE7.jpg", isbn: null, description: "Desk and chair", price: "$40.00", category: "Misc", className: null, Professor: null, Date: "05/02/2016"},];
 
 
     ReactDOM.render(
