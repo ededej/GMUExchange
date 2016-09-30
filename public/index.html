@@ -8,7 +8,22 @@
     <script type = "text/javascript" src = "myjavascript.js"></script>
     <script src="https://www.gstatic.com/firebasejs/3.4.0/firebase.js"></script>
 
+    <script>
+        "use strict";
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyD0i-jjYdLEq4iVrsnJ759fDWDO2t7Utao",
+            authDomain: "gmuexchange.firebaseapp.com",
+            databaseURL: "https://gmuexchange.firebaseio.com",
+            storageBucket: "gmuexchange.appspot.com",
+            messagingSenderId: "191322581126"
+        };
+        firebase.initializeApp(config);
 
+        // creating a reference to use firebase
+//        var usersRef = firebase.database().ref('users');
+
+    </script>
 </head>
 <body class = "body">
 <!--Menu-->
@@ -57,6 +72,15 @@ labeled for reuse-->
 <!--content to be defined by each view's JS-->
 <div id = "content">
 </div>
+<div id="registration">
+<form class = "creds" >
+    <br>Email:<br><input type="text" id = "email" placeholder="GMU e-mail" pattern="[a-z0-9]*@(masonlive\\.)?gmu\\.edu"><br>
+    <br>Password:<br><input type="password" id = "password" placeholder = "password"><br>
+    <br>First name:<br><input type="text" placeholder = "First Name" id="firstName"><br>
+    <br>Last name:<br><input type="text" id="lastName" placeholder = "Last Name"><br>
+    <br><button class = "button" id = "signUpButton" >Sign Up</button></form>
+</div>
+<script type="text/javascript" src="signUpJS.js"></script>
 </body>
 <!--Footer-->
 <footer class = "footer">

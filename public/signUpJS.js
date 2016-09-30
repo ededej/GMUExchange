@@ -1,17 +1,17 @@
 $(document).ready(function() {
-
-    "use strict";
-// Initialize Firebase
-    var config = {
-        apiKey: "AIzaSyD0i-jjYdLEq4iVrsnJ759fDWDO2t7Utao",
-        authDomain: "gmuexchange.firebaseapp.com",
-        databaseURL: "https://gmuexchange.firebaseio.com",
-        storageBucket: "gmuexchange.appspot.com",
-        messagingSenderId: "191322581126"
-    };
-    firebase.initializeApp(config);
-
-// creating a reference to use firebase
+//
+//     "use strict";
+// // Initialize Firebase
+//     var config = {
+//         apiKey: "AIzaSyD0i-jjYdLEq4iVrsnJ759fDWDO2t7Utao",
+//         authDomain: "gmuexchange.firebaseapp.com",
+//         databaseURL: "https://gmuexchange.firebaseio.com",
+//         storageBucket: "gmuexchange.appspot.com",
+//         messagingSenderId: "191322581126"
+//     };
+//     firebase.initializeApp(config);
+//
+// // creating a reference to use firebase
     var usersRef = firebase.database().ref('users');
 
 

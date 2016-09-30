@@ -22,6 +22,8 @@ $(document).ready(function() {
     history.pushState({activePane: 'Home'},'');
     //show main heading, hide section heading
     $('.mainHeading').show();
+    $('#registration').hide();
+
     $('.sectionHeading').hide();
     //Collect information from starter data; populate bottomColumns with Features
     var temp = '<div class = "bottomColumns"><h1 class = "features">Features</h1><table><tr>';
@@ -41,6 +43,8 @@ $(document).ready(function() {
         $('#subtitle').html('<h2 class="subtitle">Tag line</h2>');
         $('.mainHeading').show();
         $('.sectionHeading').hide();
+        $('#registration').hide();
+
         //Collect information from starter data; populate bottomColumns with Features
         var temp = '<div class = "bottomColumns" data-list-size="3"><h1 class = "features">Features</h1><table><tr>';
         for (feature of features) {
@@ -79,6 +83,7 @@ $(document).ready(function() {
         document.title = 'GMUExchange - Log In';
         $('#subtitle').html('<h2 class="subtitle">Log In</h2>');
         $('.mainHeading').hide();
+        $('#registration').hide();
         $('.sectionHeading').show();
         $('#content').html(
             '<form class = "creds"><br>Email:<br>' +
@@ -111,17 +116,22 @@ $(document).ready(function() {
         document.title = 'GMUExchange - Sign Up';
         $('#subtitle').html('<h2 class="subtitle">Sign Up</h2>');
         $('.mainHeading').hide();
+        $('#content').hide();
+
         $('.sectionHeading').show();
-        $('#content').html(
-            '<form class = "creds">' +
-            '<br>Email:<br><input type="text" id = "email" placeholder="GMU e-mail" pattern="[a-z0-9]*@(masonlive\\.)?gmu\\.edu"><br>' +
-            '<br>Password:<br><input type="password" id = "password" placeholder = "password"><br>' +
-            '<br>First name:<br><input type="text" placeholder = "First Name" id="firstName"><br>' +
-            '<br>Last name:<br><input type="text" id="lastName" placeholder = "Last Name"><br>' +
-            '<br><button class = "button" id = "signUpButton" onlick = "createUser();">Sign Up</button></form>'
-            + $.getScript("signUpJS.js")
-            // '<script type="text/javascript" src="signUpJS.js"></script>'
-        );
+        $('#registration').show();
+
+        // $('#content').html(
+        //     '<form class = "creds">' +
+        //     '<br>Email:<br><input type="text" id = "email" placeholder="GMU e-mail" pattern="[a-z0-9]*@(masonlive\\.)?gmu\\.edu"><br>' +
+        //     '<br>Password:<br><input type="password" id = "password" placeholder = "password"><br>' +
+        //     '<br>First name:<br><input type="text" placeholder = "First Name" id="firstName"><br>' +
+        //     '<br>Last name:<br><input type="text" id="lastName" placeholder = "Last Name"><br>' +
+        //     '<br><button class = "button" id = "signUpButton" >Sign Up</button></form>'+
+        //     '<script type="text/javascript" src="signUpJS.js"></script>'
+        // );
+        // $.getScript("signUpJS.js");
+
         function createUser() {             //this takes data entered into the sign up fields and creates a new user and add its to the user list
             var user = {
                 email: document.getElementById('email').value,
@@ -141,6 +151,7 @@ $(document).ready(function() {
         document.title = 'GMUExchange - Search';
         $('#subtitle').html('<h2 class="subtitle">Search</h2>');
         $('.mainHeading').hide();
+        $('#registration').hide();
         $('.sectionHeading').show();
 
         //Collect information from starter data; populate searchBoxTable with Items
@@ -175,6 +186,7 @@ $(document).ready(function() {
 
     $('#postLink').click(function(){
         $('.mainHeading').hide();
+        $('#registration').hide();
         $('.sectionHeading').show();
         $('#subtitle').html('<h2 class="subtitle">Post New Item</h2>');
         var temp = '<div class = "search" data-list-size="4">'+
@@ -257,6 +269,7 @@ $(document).ready(function() {
         $('.rightMenuLinks').show();
         $('.mainHeading').show();
         $('.sectionHeading').hide();
+        $('#registration').hide();
         $('#userName').css({"visibility": "hidden"});
         $('#logOut').css({"visibility": "hidden"}); //http://stackoverflow.com/questions/3730035/how-to-change-css-using-jquery
     });
