@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sing up</title>
+    <!--<link href="stylesheet.css" rel="stylesheet">-->
+    <script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <!--<script type = "text/javascript" src = "myjavascript.js"></script>-->
+    <script src="https://fb.me/react-15.0.0.js"></script>
+    <script src="https://fb.me/react-dom-15.0.0.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/3.4.0/firebase.js"></script>
+    <!-- ReactFire -->
+    <script src="https://cdn.firebase.com/libs/reactfire/1.0.0/reactfire.min.js"></script>
+
+</head>
+<body>
+<div id="registration">
+<!--<h2 class="subtitle">Sign Up</h2>-->
+<!--<form class = "creds">-->
+    <!--<br>Email:<br><input type="text" id = "email" placeholder="GMU e-mail" pattern="[a-z0-9]*@(masonlive\\.)?gmu\\.edu"><br>-->
+    <!--<br>Password:<br><input type="password" id = "password" placeholder = "password"><br>-->
+    <!--<br>First name:<br><input type="text" placeholder = "First Name" id="firstName"><br>-->
+    <!--<br>Last name:<br><input type="text" id="lastName" placeholder = "Last Name"><br>-->
+    <!--<br><button class = "button" id = "signUpButton" >Sign Up</button></form>-->
+</div>
+<script type="text/babel">
+    "use strict";
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyD0i-jjYdLEq4iVrsnJ759fDWDO2t7Utao",
+        authDomain: "gmuexchange.firebaseapp.com",
+        databaseURL: "https://gmuexchange.firebaseio.com",
+        storageBucket: "gmuexchange.appspot.com",
+        messagingSenderId: "191322581126"
+    };
+    firebase.initializeApp(config);
+
+    var UserForm= React.createClass({
+//        mixins: [ReactFireMixin],
+//        getInitialState: function () {
+//            return {items: []};
+//        },
+//
+//        componentWillMount: function () {
+//            this.fireRef = firebase.database().ref('users');
+//
+//            this.bindAsArray(this.fireRef, "items");
+//        },
+//        validateEmail: function(e){
+////            if (!/[a-z0-9]*@(masonlive\\.)?gmu\\.edu/.test(e.email)) {
+//                return "'" + e.email + "' is not a valid email.";
+////            }
+//
+//        },
+        getInitialState: function() {
+            return {value: 'email'};
+        },
+        handleChange: function(event) {
+            this.setState({value: event.target.value.substr(/[a-z0-9]*@(masonlive\\.)?gmu\\.edu/)});
+        },
+
+//        handleAdd: function (e) {
+//            this.fireRef.push({"text": ""});
+//        },
+       render: function () {
+           return (
+                   <div>
+                       <h2 class="subtitle">Sign Up</h2>
+                       <form class="creds">
+                           <p> Email: <input type="email" id="email" placeholder="GMU e-mail" value={this.state.value}
+                                             onChange={this.handleChange}
+                                             pattern="[a-z0-9]*@(masonlive\\.)?gmu\\.edu" /></p>
+                           <p> Password: <input type="password" id="password" placeholder="password"/></p>
+                           <p> First name: <input type="text" placeholder="First Name" id="firstName"/></p>
+                           <p> Last name: <input type="text" id="lastName" placeholder="Last Name"/></p>
+                           <p>
+                               <button class="button" id="signUpButton" onClick={this.handleAdd}>Sign Up</button>
+                           </p>
+                       </form>
+                   </div>
+           )
+       }
+    });
+
+    ReactDOM.render(<UserForm />, document.getElementById('registration'));
+
+</script>
+<!--<script type="text/javascript" src="signUpJS.js"></script>-->
+
+</body>
+</html>
