@@ -30,10 +30,6 @@
 .searchResultTable tr:nth-child(odd){ /*http://www.w3schools.com/css/css_table.asp*/
     background-color: #ffffcc;
 }
-input[type="text"]{
-    font-size: 17px;
-    width: 80%;
-}
 
 .searchBoxTable .button {
     width: 100%;

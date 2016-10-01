@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="stylesheet.css" rel="stylesheet">
+    <link href="search.css" rel="stylesheet">
+    <link href="compatibility.css" rel="stylesheet">
+    <script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type = "text/javascript" src = "myjavascript.js"></script>
+    <script src="https://unpkg.com/react@15.3.2/dist/react.js"></script>
+    <script src="https://unpkg.com/react-dom@15.3.2/dist/react-dom.js"></script>
+    <script src="https://unpkg.com/babel-core@5.8.38/browser.min.js"></script>
+</head>
+<body>
+<script type = "text/babel">
+
+    var ProductRegistration = React.createClass({
+        //http://stackoverflow.com/questions/29108779/how-to-get-selected-value-of-a-dropdown-menu-in-reactjs
+        handleChange: function() {
+            console.log('sel changed: desc:'+this.props.descriptionText+' price: '+this.props.priceText);
+            this.props.onUserInput(
+                    this.refs.descriptionTextInput.value,
+                    this.refs.priceTextInput.value,
+                    //this.refs.categorySelection.value
+            );
+        },
+        render: function() {
+            //var sel = this.props.descriptionText + this.props.priceText + this.props.categorySelection;
+            console.log('desc: '+this.props.descriptionText+ ' price: ' +this.props.priceText);
+            return(
+                    <div>
+                        <form className = "creds">
+                            <table className = "signUpFormTable">
+                                <tbody><tr>
+                                    <td>Category: </td>
+                                    <td><select name="searchTermSelection">
+                                        <option name = "category" value="textbook">--select one--</option>
+                                        <option name = "category" value="textbook">Textbook</option>
+                                        <option name = "category" value="classNotes">Class Notes</option>
+                                        <option name = "category" value="classMaterials">Class Materials</option>
+                                        <option name = "category" value="misc">Miscellaneous</option>
+                                    </select>
+                                    </td></tr>
+                                <tr>
+                                    <td>Item Description: </td>
+                                    <td><input
+                                            className = "input"
+                                            type = "text"
+                                            placeholder = "Description"
+                                            value={this.props.descriptionText}
+                                            ref="descriptionTextInput"
+                                            onChange={this.handleChange}
+                                            id = "productSubmissionDescription"
+                                    /></td>
+                                </tr>
+                                <tr>
+                                    <td>Price: </td>
+                                    <td><input
+                                            className = "input"
+                                            type="text"
+                                            placeholder = "Price"
+                                            value={this.props.priceText}
+                                            ref="priceTextInput"
+                                            onChange={this.handleChange}
+                                            id = "productSubmissionPrice"
+                                    /></td></tr>
+                                <tr>
+                                    <td>
+                                        <button
+                                                className = "button"
+                                                id = "signUpButton"
+                                        >Submit</button>
+                                    </td></tr>
+                                </tbody></table>
+                        </form>
+                    </div>
+            );
+        }
+    });
+
+    var UserWelcome = React.createClass({
+        render: function() {
+            return(
+                    <div>
+                        <h1>Welcome, Name!</h1>
+                        <h3>To post a product, please fill out the form below:</h3>
+                    </div>
+            );
+        }
+    });
+
+    var PostAProductPage = React.createClass({
+        getInitialState: function() {
+            return {
+                categorySelection: '--select one--',
+                descriptionText: '',
+                priceText: '',
+            }
+        },
+        handleUserInput: function(descriptionText,priceText,categorySelection) {
+            this.setState({
+                categorySelection: categorySelection,
+                descriptionText: descriptionText,
+                priceText: priceText
+            });
+        },
+        render: function() {
+            return (
+                    <div className = "body pageContent">
+                        <UserWelcome
+                                user={this.props.user}
+                        />
+                        <ProductRegistration
+                                categorySelection={this.state.categorySelection}
+                                descriptionText={this.state.descriptionText}
+                                priceText={this.state.priceText}
+                                onUserInput={this.handleUserInput}
+                        />
+                    </div>
+            );
+        }
+    });
+
+    var ITEMS = [{id: "1", image: "IMAGE1.jpg", isbn: "978-1305257795", description: "Research Methods and Statistics - 5th edition", price: "$144.48", category: "Textbook", className: "GEN 301", Professor: "Johnson", Date: "01/02/2016"},
+        {id: "2", image: "IMAGE2.jpg", isbn: "978-1118345009", description: "Principles of Anatomy and Physiology -Text Only - 14th edition", price: "$150.96", category: "Textbook", className: "PHYS 240", Professor: "Smith", Date: "05/02/2016"},
+        {id: "3", image: "IMAGE3.jpg", isbn: "978-1305632134", description: "Power System Analysis and Design - 6th edition", price: "$148.49", category: "Textbook", className: "GEN 301", Professor: "Marks", Date: "07/02/2016"},
+        {id: "4", image: "IMAGE4.jpg", isbn: "978-0134201665", description: "Anatomy and Physiology - With Mastering A and P - 6th edition", price: "$249.90", category: "Textbook", className: "PHYS 100", Professor: "Walker", Date: "08/02/2016"},
+        {id: "5", image: "IMAGE5.jpg", isbn: null, description: "Class notes for GEN 202", price: "$10.00", category: "ClassNotes", className: "GEN 301", Professor: "Johnson", Date: "01/02/2016"},
+        {id: "6", image: "IMAGE6.jpg", isbn: null, description: "Class materials for ECE 301", price: "$25.00", category: "ClassMaterials", className: "ECE 301", Professor: "Johnson", Date: "01/02/2016"},
+        {id: "7", image: "IMAGE7.jpg", isbn: null, description: "Desk and chair", price: "$40.00", category: "Misc", className: null, Professor: null, Date: "05/02/2016"},];
+
+
+    ReactDOM.render(
+            <PostAProductPage items={ITEMS} />,
+            document.getElementById('container')
+    );
+</script>
+<nav class = "menu">
+    <ul>
+        <li class = "left" id = "homeLink">Home</li>
+        <li class = "left" id = "searchLink">Search</li>
+        <li class = "left" id = "postLink">Post Item</li>
+        <li class = "rightMenuLinks" id = "logInLink">Log In</li>
+        <li class = "rightMenuLinks" id = "signUpLink">Sign Up</li>
+        <li id = "logOut">Log Out</li>
+        <!--last li element to be defined as username after successful login-->
+        <li><span id = "userName"></span></li>
+    </ul>
+</nav>
+<div class = "mainHeading">
+    <h1 class = "title">GMUExchange</h1>
+    <!--to be defined by home view's JS-->
+    <h2 class = "subtitle"></h2>
+    <!--Quick log in access-->
+    <table class = "quickLogin">
+        <tr>
+            <th><input type = "email" placeholder = "GMU e-mail" id = "quickLoginEmail"/></th>
+            <th><input type = "password" placeholder = "password" id = "quickLoginPassword"/></th>
+        </tr>
+        <tr>
+            <td colspan = "2"><button class = "button" id = "quickLoginButton">Log In</button></td>
+        </tr>
+    </table>
+    <!--Image labeled for reuse-->
+    <img src="https://upload.wikimedia.org/wikipedia/commons/e/ea/An_aerial_view_of_the_Johnson_Center_at_dawn..jpg">
+</div>
+<div class = "sectionHeading">
+    <h1 class = "title">GMUExchange</h1>
+    <!--Subtitle to be defined by each view's JS-->
+    <h2 class = "subtitle"  id = "subtitle">Search</h2>
+    <!--Image labeled for reuse-->
+    <img src="https://upload.wikimedia.org/wikipedia/commons/e/ea/An_aerial_view_of_the_Johnson_Center_at_dawn..jpg">
+</div>
+<div id="container">
+    <!-- This element's contents will be replaced with your component. -->
+</div>
+</body>
+<footer class = "footer">
+    <h3>SWE 432</h3>
+    <p>Dayana Hudson</p>
+    <p>Ermal Dedej</p>
+    <p><a href="https://github.com/dayanahudson/GMUExchange/">GitHub</a></p>
+</footer>
+</html>

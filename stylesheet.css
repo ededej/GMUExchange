@@ -2,7 +2,7 @@
    website.*/
 
 /* Text styling*/
-p, h1, h2, h3, h4, h5, h6, li, .bottomColumns, .creds, .search {
+p, h1, h2, h3, h4, h5, h6, li, .bottomColumns, .creds, .search, .body {
     font-family: sans-serif;
 }
 a {
@@ -10,14 +10,25 @@ a {
     text-decoration:none;
 }
 html {
-    height: 100%;
+    min-height:100%;
 }
 body {
-    min-height: 100%;
+    background-color: #f2f2f2;
 }
-
 content {
     min-height: 100%;
+}
+input[type="text"], input[type="password"]{
+    font-size: 17px;
+    width: 80%;
+}
+.pageContent {
+    padding: 15px;
+}
+
+.signUpFormTable {
+    padding: 10px;
+    text-align: left;
 }
 
 .creds{
@@ -102,12 +113,6 @@ li.left {
     padding-right: 25%;
 }
 
-/* Home Page Login styling*/
-input[type="email"], input[type="password"] {
-    margin: 5px;
-    width: 90%;
-    font-size: 20px;
-}
 /*Input boxes*/
 .input {
     padding: 5px;
@@ -151,12 +156,11 @@ input[type="email"], input[type="password"] {
 /*Footer styling*/
 .footer {
     width: 100%;
-    max-height: 150px;
     background-color: #333333;
     text-align: center;
     color: white;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
 .footer a {
     font-family: monospace;
