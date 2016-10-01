@@ -22,13 +22,26 @@ input[type="text"], input[type="password"], input[type="email"]{
     font-size: 17px;
     width: 80%;
 }
+/*DELETE WHEN DONE TESTING-------------------------------------------------------------
+.quickLogin table, th, td {
+    border: 1px solid black;
+}*/
 
 .pageContent {
     padding: 15px;
 }
 
+.signUpFormDiv {
+    text-align: center;
+}
+
 .signUpFormTable {
     padding: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.signUpFormTable td{
     text-align: left;
 }
 
@@ -36,7 +49,7 @@ input[type="text"], input[type="password"], input[type="email"]{
     position: relative;
     padding: 15px;
     display: block;
-    width: 55%;
+    width: 90%;
     text-align: left;
 }
 
