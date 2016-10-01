@@ -144,7 +144,7 @@
                 {name: 'Max Price', value: '$'+this.props.filterPriceMax, active: true},
                 {name: 'Date', value: this.props.filterDate, active: true}];
             filtersCurrent.forEach( function(filter) {
-                if(filter.active == true && filter.value!= null && ( filter.value.length > 0))
+                if( filter.name == 'Max Price'|| filter.name == 'Category' || (filter.active == true && filter.value!= null && filter.value.length > 0))
                 {
                     filtersActive.push(
                             <ActiveFilters key={filter.name}
@@ -173,13 +173,13 @@
                             </tbody>
                         </table>
                         <div id = "searchFilters">
-                            <table>
+                            <table className = "searchBoxTable">
                                 <thead>
-                                <tr><td>Category</td><td>Class</td><td>Professor</td><td>Maximum Price</td><td>Date</td></tr>
+                                <tr><td>Category</td><td>Class</td><td>Professor</td><td>Maximum Price</td><td>Posted Date</td></tr>
                                 </thead>
                                 <tbody><tr>
                                     <td><select name="searchTermSelection">
-                                        <option name = "category" value="all">All</option>
+                                        <option name = "category" value="All">All</option>
                                         <option name = "category" value="Textbook">Textbook</option>
                                         <option name = "category" value="Class Notes">Class Notes</option>
                                         <option name = "category" value="Class Materials">Class Materials</option>
@@ -188,7 +188,7 @@
                                     <td><input
                                             className = "input"
                                             type = "text"
-                                            placeholder = "Search terms"
+                                            placeholder = "Search term"
                                             value={this.props.filterClassText}
                                             ref="filterClassTextInput"
                                             onChange={this.handleChange}
@@ -197,7 +197,7 @@
                                     <td><input
                                             className = "input"
                                             type = "text"
-                                            placeholder = "Search terms"
+                                            placeholder = "Search term"
                                             value={this.props.filterProfessorText}
                                             ref="filterProfessorTextInput"
                                             onChange={this.handleChange}
@@ -215,7 +215,7 @@
                                     <td><input
                                             className = "input"
                                             type = "text"
-                                            placeholder = "Search terms"
+                                            placeholder = "Search term"
                                             value={this.props.filterDate}
                                             ref="filterDateInput"
                                             onChange={this.handleChange}
@@ -240,7 +240,7 @@
         getInitialState: function() {
             return {
                 filterKeywordText: '',
-                filterCategory: '',
+                filterCategory: 'All',
                 filterClassText: '',
                 filterProfessorText: '',
                 filterPriceMax: 500,

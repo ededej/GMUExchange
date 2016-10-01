@@ -8,9 +8,6 @@
     padding: 15px;
     font-weight: bold; /*http://www.w3schools.com/cssref/pr_font_weight.asp*/
 }
-.search .button {
-    width: 25%;
-}
 .searchResultTable {
     padding-top: 10px;
     padding-bottom: 10px;
@@ -29,10 +26,6 @@
 }
 .searchResultTable tr:nth-child(odd){ /*http://www.w3schools.com/css/css_table.asp*/
     background-color: #ffffcc;
-}
-
-.searchBoxTable .button {
-    width: 100%;
 }
 
 /*Filter section styling*/
