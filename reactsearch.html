@@ -29,37 +29,29 @@
             );
         }
     });
-    /*
+
+    // onClick functionality: http://stackoverflow.com/questions/33846682/react-onclick-function-fires-on-render
+    // removeItem functionality: view-source:https://gmu-swe432.github.io/lecture10demos/public/06bonusreact/
+    // <button className = "activeFilterDeselecter" onClick={() => {_this.props.removeItem(this.props.filter)}}>x</button>
     var ActiveFilters = React.createClass({
         render: function() {
+            var _this = this;
             return (
-                    <table>
-                        <tbody>
-                        <tr>
-                            <td><div className = "activeFilterItem">filter 1
-                                <div className = "activeFilterDeselecter">x</div></div></td>
-                            <td><div className = "activeFilterItem">filter 2
-                                <div className = "activeFilterDeselecter">x</div></div></td>
-                            <td><div className = "activeFilterItem">filter 3
-                                <div className = "activeFilterDeselecter">x</div></div></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <td><div className = "activeFilterItem">{this.props.name}: {this.props.value}</div></td>
 
             );
         }
     });
-*/
+
 
     var SearchResultsTable = React.createClass({
         render: function() {
-            //console.log("filterClassText1: "+this.props.filterClassText);
             var rows = [];
             var keyword = this.props.filterKeywordText;
             var className = this.props.filterClassText;
             var professor = this.props.filterProfessorText;
             var price = parseFloat(this.props.filterPriceMax);
-            //var date = this.props.filterDate.toLowerCase();
+            //var date = this.props.filterDate;
             this.props.items.forEach(function(item) {
                 console.log('id: '+item.id);
                 var keywordRegex = new RegExp('');
@@ -95,14 +87,10 @@
                 if(item.professor != null){
                     professorMatch = professorRegex.exec(item.professor.toLowerCase());
                 }
-                console.log(className);
-                console.log("KW match:" + keywordMatch);
-                console.log("class match:" + classNameMatch);
-                console.log("prof match:" + professorMatch);
                 if ((keywordMatch != null && keywordMatch.length > 0) &&
                         (price > parseFloat(item.price) &&
-                        ( (item.category == "Miscellaneous" && className == '' && professor == '') ||
-                        ((classNameMatch != null && classNameMatch.length > 0) && professorMatch != null))
+                                ( (item.category == "Miscellaneous" && className == '' && professor == '') ||
+                                ((classNameMatch != null && classNameMatch.length > 0) && professorMatch != null))
                         ))
                 {
                     rows.push(<Results image = {item.image}
@@ -127,21 +115,6 @@
         }
     });
 
-/*Filter and Search button declaration; not needed since page automatically updates
- <td><button
- className = "button"
- id = "filterButton"
- >Filters</button></td>
- <td><button
- className = "button"
- id = "searchButton"
- >Search</button></td>
-
-Referencing filters
- <div id = "searchFilters">
- <Filters/>
- </div>
-* */
     var SearchBox = React.createClass({
         handleChange: function() {
             this.props.onUserInput(
@@ -153,79 +126,112 @@ Referencing filters
                     this.refs.filterDateInput.value,
             );
         },
-        //To add after the last </table> tag: <ActiveFilters/>
+        /*
+        //view-source:https://gmu-swe432.github.io/lecture10demos/public/06bonusreact/
+        removeItem: function(filter) {
+            console.log('remove: '+filter);
+            filter.active = false;
+            console.log(filter.active);
+            //filtersActive.removeItem(key);
+        },*/
         render: function(){
-            console.log("KW: "+this.props.filterKeywordText + ' Class: '+this.props.filterClassText);
+            //var _this = this; //view-source:https://gmu-swe432.github.io/lecture10demos/public/06bonusreact/
+            var filtersActive = [];
+            var filtersCurrent = [{name: 'Keyword', value: this.props.filterKeywordText, active: true},
+                {name: 'Category', value: this.props.filterCategory, active: true},
+                {name: 'Class', value: this.props.filterClassText, active: true},
+                {name: 'Professor', value: this.props.filterProfessorText, active: true},
+                {name: 'Max Price', value: '$'+this.props.filterPriceMax, active: true},
+                {name: 'Date', value: this.props.filterDate, active: true}];
+            filtersCurrent.forEach( function(filter) {
+                if(filter.active == true && filter.value!= null && ( filter.value.length > 0))
+                {
+                    filtersActive.push(
+                            <ActiveFilters key={filter.name}
+                                           name={filter.name}
+                                           value={filter.value}
+                                           active={filter.active}
+                            />
+                    );
+                }
+            });
             return (
-            <div className = "search" data-list-size="4">
-                <table className = "searchBoxTable">
-                    <tbody>
-                    <tr>
-                        <td><input
-                                className = "input"
-                                type = "text"
-                                placeholder = "Search by keyword"
-                                value={this.props.filterKeywordText}
-                                ref="filterKeywordTextInput"
-                                onChange={this.handleChange}
-                                id = "searchBox"
-                        /></td>
-                    </tr>
-                    </tbody>
-                </table>
-                <div id = "searchFilters">
-                    <table>
-                        <thead>
-                        <tr><td>Category</td><td>Class</td><td>Professor</td><td>Maximum Price</td><td>Date</td></tr>
-                        </thead>
-                        <tbody><tr>
-                            <td><select name="searchTermSelection">
-                                <option name = "category" value="all">All</option>
-                                <option name = "category" value="Textbook">Textbook</option>
-                                <option name = "category" value="Class Notes">Class Notes</option>
-                                <option name = "category" value="Class Materials">Class Materials</option>
-                                <option name = "category" value="Miscellaneous">Miscellaneous</option>
-                            </select></td>
-                            <td><input
-                                    className = "input"
-                                    type = "text"
-                                    placeholder = "Search terms"
-                                    value={this.props.filterClassText}
-                                    ref="filterClassTextInput"
-                                    onChange={this.handleChange}
-                                    id = "classSearchTermInput"
-                            /></td>
-                            <td><input
-                                    className = "input"
-                                    type = "text"
-                                    placeholder = "Search terms"
-                                    value={this.props.filterProfessorText}
-                                    ref="filterProfessorTextInput"
-                                    onChange={this.handleChange}
-                                    id = "professorSearchTermInput"
-                            /></td>
-                            <td><input
-                                    type="range"
-                                    min="0"
-                                    max="500"
-                                    id="priceSearchTermInput"
-                                    value={this.props.filterPriceMax}
-                                    ref="filterPriceMaxInput"
-                                    onChange={this.handleChange}
-                            /><div id = "maxPriceDisplay">{this.props.filterPriceMax}</div></td>
-                            <td><input
-                                    className = "input"
-                                    type = "text"
-                                    placeholder = "Search terms"
-                                    value={this.props.filterDate}
-                                    ref="filterDateInput"
-                                    onChange={this.handleChange}
-                                    id = "dateSearchTermInput"/></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                    <div className = "search" data-list-size="4">
+                        <table className = "searchBoxTable">
+                            <tbody>
+                            <tr>
+                                <td><input
+                                        className = "input"
+                                        type = "text"
+                                        placeholder = "Search by keyword"
+                                        value={this.props.filterKeywordText}
+                                        ref="filterKeywordTextInput"
+                                        onChange={this.handleChange}
+                                        id = "searchBox"
+                                /></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div id = "searchFilters">
+                            <table>
+                                <thead>
+                                <tr><td>Category</td><td>Class</td><td>Professor</td><td>Maximum Price</td><td>Date</td></tr>
+                                </thead>
+                                <tbody><tr>
+                                    <td><select name="searchTermSelection">
+                                        <option name = "category" value="all">All</option>
+                                        <option name = "category" value="Textbook">Textbook</option>
+                                        <option name = "category" value="Class Notes">Class Notes</option>
+                                        <option name = "category" value="Class Materials">Class Materials</option>
+                                        <option name = "category" value="Miscellaneous">Miscellaneous</option>
+                                    </select></td>
+                                    <td><input
+                                            className = "input"
+                                            type = "text"
+                                            placeholder = "Search terms"
+                                            value={this.props.filterClassText}
+                                            ref="filterClassTextInput"
+                                            onChange={this.handleChange}
+                                            id = "classSearchTermInput"
+                                    /></td>
+                                    <td><input
+                                            className = "input"
+                                            type = "text"
+                                            placeholder = "Search terms"
+                                            value={this.props.filterProfessorText}
+                                            ref="filterProfessorTextInput"
+                                            onChange={this.handleChange}
+                                            id = "professorSearchTermInput"
+                                    /></td>
+                                    <td><input
+                                            type="range"
+                                            min="0"
+                                            max="500"
+                                            id="priceSearchTermInput"
+                                            value={this.props.filterPriceMax}
+                                            ref="filterPriceMaxInput"
+                                            onChange={this.handleChange}
+                                    /><div id = "maxPriceDisplay">${this.props.filterPriceMax}</div></td>
+                                    <td><input
+                                            className = "input"
+                                            type = "text"
+                                            placeholder = "Search terms"
+                                            value={this.props.filterDate}
+                                            ref="filterDateInput"
+                                            onChange={this.handleChange}
+                                            id = "dateSearchTermInput"/></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table>
+                                <tbody>
+                                <tr>
+                                    {filtersActive}
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
             );
         }
     });
@@ -312,8 +318,8 @@ Referencing filters
     <!--Quick log in access-->
     <table class = "quickLogin">
         <tr>
-            <th><input type = "email" placeholder = "GMU e-mail" id = "quickLoginEmail"/></th>
-            <th><input type = "password" placeholder = "password" id = "quickLoginPassword"/></th>
+            <th><input class = "input" type = "email" placeholder = "GMU e-mail" id = "quickLoginEmail"/></th>
+            <th><input class = "input" type = "password" placeholder = "Password" id = "quickLoginPassword"/></th>
         </tr>
         <tr>
             <td colspan = "2"><button class = "button" id = "quickLoginButton">Log In</button></td>

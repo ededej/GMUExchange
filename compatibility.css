@@ -48,6 +48,11 @@
     /*.searchResultTable {
         min-height: 20px;
     }*/
+    .mainHeading .table, .quickLogin{
+        width: 100%;
+        padding-left: 25%;
+        padding-right: 25%;
+    }
     .mainHeading .title {
         top: 5%;
         font-size: 50px;
@@ -74,6 +79,10 @@
     /*.searchResultTable {
         min-height: 350px;
     }*/
+    .mainHeading .table, .quickLogin{
+        padding-left: 35%;
+        padding-right: 35%;
+    }
     .mainHeading .subtitle {
         top: 20%;
         font-size: 40px;
