@@ -61,6 +61,68 @@
     //SIGN UP PAGE **********************************************************************************************
 
     var SignUpPage = React.createClass({
+        mixins: [ReactFireMixin],
+        getInitialState: function () {
+            return {email:'',
+                password:'',
+                fName:'',
+                lName:'',
+                results:''
+
+            };
+        },
+        componentWillMount: function () {
+            this.fireRef = firebase.database().ref('users');
+
+        },
+        handleChange: function(event) {
+        },
+        checkPassword: function(event){
+            if(this.refs.password.value !== this.refs.confirmPwd.value ) {
+                this.setState({ results: true });
+                console.log("Not valid");
+            }else{
+                console.log("valid");
+            }
+        },
+        checkEmail: function(event){
+            if(this.refs.password.value !== this.refs.confirmPwd.value ) {
+                this.setState({ results: true });
+                console.log("Not valid");
+            }else{
+                console.log("valid");
+            }
+        },
+
+        handleAdd: function (e) {
+            var uid = this.refs.email.value;
+            var uidCopy = uid;
+            // make the email as key which doesn't allow the "." so I will change that %20 to make the email a key
+            uid = uid.replace(/\./g, '%20');
+            console.log(this.refs.email.value);
+            var self = this;
+            this.fireRef.once('value', function (snapshot) {
+                var data = snapshot.val();
+                var checkUser = snapshot.child(uid).exists();
+
+                // if the email already exits as key than don't create a new entry
+                if (checkUser) {
+                    alert('User with ' + uidCopy + ' has an account.\n' + "Sorry, we are not able to register you with this email.");
+                    return false;
+                } else {
+                    console.log('Setting up');
+                    // setting up the firebase with all the necessary fields
+                    this.fireRef.child(uid).set(
+                            {
+                                FirstName: this.refs.fName.value,
+                                LastName: this.refs.lName.value,
+                                Email: this.refs.email.value,
+                                Password: this.refs.password.value
+                            });
+                }
+            }.bind(this));
+
+        },
         render: function () {
             return(
                     <form className = "creds">
@@ -68,32 +130,48 @@
                         <tr>
                             <td>Email:</td>
                             <td>
-                                <input className="input" type="text" id = "email" placeholder="GMU e-mail" pattern="[a-z0-9]*@(masonlive\\.)?gmu\\.edu" />
+                                <input className="input" type="text" id = "email" placeholder="GMU e-mail"
+                                       ref="email"
+                                       pattern="[a-z0-9]*@(masonlive\\.)?gmu\\.edu"
+                                       onChange={this.checkEmail}/>
                             </td>
                         </tr>
                         <tr>
                             <td>Password:</td>
                             <td>
-                                <input className="input" type="password" id = "password" placeholder = "Password" />
+                                <input className="input" type="password" id = "password"
+                                       ref="password"
+                                       placeholder = "Password" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Confirm Password:</td>
+                            <td>
+                                <input className="input" type="password" id = "password"
+                                       placeholder = "Password"
+                                       onChange={this.checkPassword}
+                                       ref="confirmPwd"
+                                />
                             </td>
                         </tr>
                         <tr>
                             <td>First name:</td>
                             <td>
-                                <input className="input" type="text" id="firstName" placeholder = "First Name" />
+                                <input className="input"ref="fName"
+                                       type="text" id="firstName" placeholder = "First Name" />
                             </td>
                         </tr>
                         <tr>
                             <td>Last name:</td>
                             <td>
-                                <input className="input" type="text" id="lastName" placeholder = "Last Name" />
+                                <input className="input"  ref="lName" type="text" id="lastName" placeholder = "Last Name" />
                             </td>
                         </tr>
                         <tr>
-                            <button className = "button" id = "signUpButton">Sign Up</button>
+                            <button className = "button" id = "signUpButton" onClick={this.handleAdd}>Sign Up</button>
                         </tr>
                         </tbody></table>
-                    </form>
+                    </form>       
             );
         }
     });
