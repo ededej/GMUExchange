@@ -65,33 +65,45 @@
                 password:'',
                 fName:'',
                 lName:'',
-                results:''
+                matchPwd:''
 
             };
+            this.checkPassword = this.checkPassword.bind(this);
+
         },
         componentWillMount: function () {
             this.fireRef = firebase.database().ref('users');
+        },
 
-        },
+        //on change
         handleChange: function(event) {
+            if(this.refs.password.value !== this.refs.confirmPwd.value){
+                console.log("Not valid");
+            }else{
+                console.log("valid");
+
+            }
         },
+
+        // Checking if the user put the same password on both fields
         checkPassword: function(event){
             if(this.refs.password.value !== this.refs.confirmPwd.value ) {
-                this.setState({ results: true });
-                console.log("Not valid");
+                this.setState({ matchPwd: "Passwords don't match" });
             }else{
-                console.log("valid");
+                this.setState({ matchPwd: "" });
             }
-        },
-        checkEmail: function(event){
-            if(this.refs.password.value !== this.refs.confirmPwd.value ) {
-                this.setState({ results: true });
-                console.log("Not valid");
-            }else{
-                console.log("valid");
-            }
-        },
 
+
+        },
+        // checking if the email match the pattern
+        checkEmail: function(event){
+            if(this.refs.email.value !== '[a-z0-9]*@(masonlive\\.)?gmu\\.edu') {
+                console.log("Not matching email");
+            }else{
+                console.log("Matching email");
+            }
+        },
+// adding the user account into firebase
         handleAdd: function (e) {
             var uid = this.refs.email.value;
             var uidCopy = uid;
@@ -121,6 +133,7 @@
             }.bind(this));
 
         },
+        //render function
         render: function () {
             return(
                     <form className = "creds">
@@ -151,6 +164,10 @@
                                        ref="confirmPwd"
                                 />
                             </td>
+                            <td>
+                                <p id="matchPwd" ref="matchPwd" style={{fontSize:'15px', color:'red'}}>{this.state.matchPwd}</p>
+
+                            </td>
                         </tr>
                         <tr>
                             <td>First name:</td>
@@ -165,13 +182,15 @@
                                 <input className="input"  ref="lName" type="text" id="lastName" placeholder = "Last Name" />
                             </td>
                         </tr>
-                        </tbody></table>
+                        <tr>
+                        </tr>
+                        </tbody>
+                        </table>
                         <button className = "tableButton button" id = "signUpButton" onClick={this.handleAdd}>Sign Up</button>
-                    </form>       
+                    </form>
             );
         }
     });
-
     //POST A PRODUCT PAGE **********************************************************************************************
     var ProductRegistration = React.createClass({
         //http://stackoverflow.com/questions/29108779/how-to-get-selected-value-of-a-dropdown-menu-in-reactjs
@@ -188,9 +207,9 @@
         },
         render: function() {
             /*console.log('cat: ' + this.props.categorySelection + 'desc: '+ this.props.descriptionText +
-                    ' class: ' + this.props.classText + ' professor:' + this.props.professorText +
-                    ' price: ' +this.props.priceText + 'isbn: ' + this.props.isbnText +
-                    ' image: ' + this.props.imageUpload);*/
+             ' class: ' + this.props.classText + ' professor:' + this.props.professorText +
+             ' price: ' +this.props.priceText + 'isbn: ' + this.props.isbnText +
+             ' image: ' + this.props.imageUpload);*/
             return(
                     <div>
                         <form className = "creds">
@@ -272,10 +291,7 @@
                                 /></td>
                             </tr>
                             </tbody></table>
-                            <button
-                                    className = "tableButton button"
-                                    id = "signUpButton"
-                            >Submit</button>
+                            <button className = "tableButton button" id = "signUpButton">Submit</button>
                         </form>
                     </div>
             );
