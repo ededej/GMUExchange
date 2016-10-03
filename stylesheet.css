@@ -141,6 +141,10 @@ li.left {
     margin: auto 50%;
 }
 
+.tableButton {
+    width: 200px;
+}
+
 .button:active {
     border: none;
     background-color: white;

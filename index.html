@@ -49,10 +49,8 @@
                                 <input className="input" type="password" id = "password" placeholder = "Password" />
                             </td>
                         </tr>
-                        <tr>
-                            <button className = "button" id = "signUpButton">Log In</button>
-                        </tr>
                         </tbody></table>
+                        <button className = "tableButton button" id = "signUpButton">Log In</button>
                     </form>
             );
         }
@@ -167,10 +165,8 @@
                                 <input className="input"  ref="lName" type="text" id="lastName" placeholder = "Last Name" />
                             </td>
                         </tr>
-                        <tr>
-                            <button className = "button" id = "signUpButton" onClick={this.handleAdd}>Sign Up</button>
-                        </tr>
                         </tbody></table>
+                        <button className = "tableButton button" id = "signUpButton" onClick={this.handleAdd}>Sign Up</button>
                     </form>       
             );
         }
@@ -275,15 +271,11 @@
                                         id = "productSubmissionFile"
                                 /></td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <button
-                                            className = "button"
-                                            id = "signUpButton"
-                                    >Submit</button>
-                                </td>
-                            </tr>
                             </tbody></table>
+                            <button
+                                    className = "tableButton button"
+                                    id = "signUpButton"
+                            >Submit</button>
                         </form>
                     </div>
             );
