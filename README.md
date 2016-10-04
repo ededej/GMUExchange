@@ -1,13 +1,9 @@
 # GMUExchange
 Marketplace to buy and sell textbooks, notebooks, or other class materials.
 
-
-
-
-
 The four scenarios we decided on were as follows:
 
-1.) Register
+1.) Register*
 
    A new user can sign in to GMUExchange by providing an e-mail address and password. The application checks that the e-mails is            affiliated with GMU through use of regular expressions (ends in @gmu.edu or @masonlive.gmu.edu). The application sets the user’s        netID to his username, and the user can then log in by providing either his netID, his @gmu.edu e-mail, or his @masonlive.gmu.edu      e-mail and his password. Credentials can be changed after registration.
       
@@ -26,4 +22,5 @@ The four scenarios we decided on were as follows:
    Registered and non-registered users can browse products by entering keywords into a search bar. The page displays the results after      the search button is clicked.
    Not included in this submission: Results can be filtered by category (and subcategory if the main category is miscellaneous), class      name, professor, and price. Users are provided options for filters to narrow down results.
 
-*We implemented the post a product and search scenario in HW 3.
+*HW4 scenarios: search, post a product, and registration.
+https://dayanahudson.github.io/GMUExchange/
