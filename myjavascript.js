@@ -8,7 +8,7 @@ var features = [{name: "Feature 1", detail: "Feat 1 Lorem ipsum dolor sit amet, 
     {name: "Feature 2", detail: "Feat 2 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."},
     {name: "Feature 3", detail: "Feat 3 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."}];
 
-var items = [{image: "IMAGE 1", description: "Research Methods and Statistics - 5th edition\nISBN13: 978-1305257795", price: "$144.48"},
+var items = [{image: "IMAGE 1", description: "Research Methods and Statistics - 5th edition ISBN13: 978-1305257795", price: "$144.48"},
  {image: "IMAGE 2", description: "Principles of Anatomy and Physiology -Text Only - 14th edition\nISBN13: 978-1118345009", price: "$150.96"},
  {image: "IMAGE 3", description: "Power System Analysis and Design - 6th edition\nISBN13: 978-1305632134", price: "$148.49"},
  {image: "IMAGE 4", description: "Anatomy and Physiology - With Mastering A and P - 6th edition\nISBN13: 978-0134201665", price: "$249.90"}];
@@ -138,11 +138,27 @@ $(document).ready(function() {
         $('.sectionHeading').show();
 
         //Collect information from starter data; populate searchBoxTable with Items
-        var temp = '<div class = "search" data-list-size="4"><table class = "searchBoxTable"><tr><td><label>' +
-            '<p>Search: <input type = "text" placeholder = "Search terms" id = "searchBox"/></p></label></td><td>' +
-            '<button class = "button" id = "searchButton">Submit</button></td></tr></table>' +
-            '<button class = "button" id = "postButton">Post new item</button></td></tr></table>' +
-            '<table class = "searchResultTable"><tr><th>Image</th><th>Description</th><th>Price</th><th>Seller Contact</th></tr>';
+        var temp =
+            '<div class = "search" data-list-size="4">' + '<table class = "searchBoxTable">' +
+            '<tr><td><input class = "input" type = "text" placeholder = "Search by keywords" id = "searchBox"/></td>' +
+            '<td><button class = "button filterButton" id = "filterButton">Filters</button></td>' +
+            '<td><button class = "button" id = "searchButton">Search</button></td>' +
+            '</tr></table><div class = "searchFilters"><table>' +
+            '<tr><td>Category</td><td>Class</td><td>Professor</td><td>Maximum Price</td><td>Date</td></tr>' +
+            '<tr><td><select name="searchTermSelection">' +
+            '<option name = "category" value="all">All</option>' +
+            '<option name = "category" value="textbook">Textbook</option>' +
+            '<option name = "category" value="classNotes">Class Notes</option>' +
+            '<option name = "category" value="classMaterials">Class Materials</option>' +
+            '<option name = "category" value="misc">Miscellaneous</option></select></td>' +
+            '<td><input class = "input" type = "text" placeholder = "Search terms" id = "classSearchTermInput"/></td>' +
+            '<td><input class = "input" type = "text" placeholder = "Search terms" id = "professorSearchTermInput"/></td>' +
+            '<td><input type="range" value="50" min="0" max="500" id="priceSearchTermInput" />' +
+            '<div id = "maxPriceDisplay"></div></td>' +
+            '<td><input class = "input" type = "text" placeholder = "Search terms" id = "dateSearchTermInput"/></td>' +
+            '</tr><tr><td colspan = "5">Hit enter or search to add term(s) to the search (REPLACED BY SEARCH CRITERIA)</td></tr>' +
+            '</table></div>' +
+            '<table class = "searchResultTable"><tr><th>Image</th><th>Description</th><th>Price</th><th>Seller Contact</th></tr></div>';
 
         for (item of items) {
             temp = temp.concat('<tr><td>' + item.image + '</td><td>'+ item.description +
@@ -151,7 +167,9 @@ $(document).ready(function() {
         temp = temp.concat('</table></div>');
         $('#content').html(temp);
 
-    $('#postButton').click(function(){
+    $('#postLink').click(function(){
+        $('.mainHeading').hide();
+        $('.sectionHeading').show();
         $('#subtitle').html('<h2 class="subtitle">Post New Item</h2>');
         var temp = '<div class = "search" data-list-size="4">'+
             '<form class = newItemForm" action = "">' +
@@ -204,12 +222,11 @@ $(document).ready(function() {
                 data: varData
             });
         });
-    //});
         //provide search function
         $('#searchButton').click(function(){
             var temp = '<div class = "search" data-list-size="4"><table class = "searchBoxTable"><tr><td><label>' +
                 '<p>Search: <input type = "text" placeholder = "Search terms" id = "searchBox"/></p></label></td><td>' +
-                '<button class = "button" id = "searchButton">Submit</button></td></tr></table>' +
+                '<button class = "button" id = "searchButton">Search</button></td></tr></table>' +
                 '<table class = "searchResultTable"><tr><th>Image</th><th>Description</th><th>Price</th></tr>';
             var results = "";
             for (item of items) {
