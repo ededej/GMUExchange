@@ -6,6 +6,7 @@
     <link href="stylesheet.css" rel="stylesheet">
     <link href="search.css" rel="stylesheet">
     <link href="compatibility.css" rel="stylesheet">
+    <link href="dashBoard.css" rel="stylesheet"> <!--added extra padding at top of page-->
     <script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <!--<script type = "text/javascript" src = "myjavascript.js"></script>-->
     <script src="https://fb.me/react-15.0.0.js"></script>
@@ -15,6 +16,9 @@
     <script src="https://www.gstatic.com/firebasejs/3.4.0/firebase.js"></script>
     <!-- ReactFire -->
     <script src="https://cdn.firebase.com/libs/reactfire/1.0.0/reactfire.min.js"></script>
+    <!--D3JS-->
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="dashBoard.js"></script>
 </head>
 <body class = "body">
 
@@ -103,7 +107,7 @@
                 console.log("Matching email");
             }
         },
-// adding the user account into firebase
+        // adding the user account into firebase
         handleAdd: function (e) {
             var uid = this.refs.email.value;
             var uidCopy = uid;
@@ -120,7 +124,7 @@
                     alert('User with ' + uidCopy + ' has an account.\n' + "Sorry, we are not able to register you with this email.");
                     return false;
                 } else {
-                    console.log('Setting up');
+                    //console.log('Setting up');
                     // setting up the firebase with all the necessary fields
                     this.fireRef.child(uid).set(
                             {
@@ -194,9 +198,16 @@
     //POST A PRODUCT PAGE **********************************************************************************************
     var ProductRegistration = React.createClass({
         //http://stackoverflow.com/questions/29108779/how-to-get-selected-value-of-a-dropdown-menu-in-reactjs
+                getInitialState:function () {
+                    return{
+                            value: 'All'
+                    };
+                  },
+           mixins: [ReactFireMixin],
+
         handleChange: function() {
             this.props.onUserInput(
-                    'all',//this.refs.categorySelection.value,
+                    this.setState({value: event.target.value}),//this.refs.categorySelection.value,
                     this.refs.descriptionTextInput.value,
                     this.refs.classTextInput.value,
                     this.refs.professorTextInput.value,
@@ -204,6 +215,28 @@
                     this.refs.isbnTextInput.value,
                     this.refs.imageUploadInput.value
             );
+        },
+        componentWillMount: function () {
+            this.firePostProduct = firebase.database().ref('products');
+        },
+        handleAdd: function (e) {
+            //            var date = new Date().toDateString(); // getting the date when the user post the items
+            // setting up the firebase with all the necessary fields
+            var date=new Date().toJSON().slice(0,10);
+            this.firePostProduct.push(
+                    {
+                        category: this.refs.select.value,
+                        className: this.refs.classTextInput.value,
+                        description: this.refs.descriptionTextInput.value,
+                        professor: this.refs.professorTextInput.value,
+                        price:this.refs.priceTextInput.value,
+                        isbn: this.refs.isbnTextInput.value,
+                        image: this.refs.imageUploadInput.value,
+                        postingDate: date,
+                        sellerid:''
+                    });
+            //}
+            //}.bind(this));
         },
         render: function() {
             /*console.log('cat: ' + this.props.categorySelection + 'desc: '+ this.props.descriptionText +
@@ -216,7 +249,8 @@
                             <table className = "formTable"><tbody>
                             <tr>
                                 <td>Category: </td>
-                                <td><select name="searchTermSelection">
+                                <td><select name="searchTermSelection" type="select" ref="select" value={this.state.value}
+                                            onChange={this.handleChange}>>
                                     <option name = "category" value="textbook">--select one--</option>
                                     <option name = "category" value="textbook">Textbook</option>
                                     <option name = "category" value="classNotes">Class Notes</option>
@@ -291,7 +325,7 @@
                                 /></td>
                             </tr>
                             </tbody></table>
-                            <button className = "tableButton button" id = "signUpButton">Submit</button>
+                            <button className = "tableButton button" id = "signUpButton" onClick={this.handleAdd}>Submit</button>
                         </form>
                     </div>
             );
@@ -317,7 +351,8 @@
                 professorText: '',
                 priceText: '',
                 isbnText: '',
-                imageUpload: ''
+                imageUpload: '',
+                date:''
             }
         },
         handleUserInput: function(categorySelection,descriptionText,classText,professorText,priceText,isbnText,imageUpload) {
@@ -328,7 +363,7 @@
                 professorText: professorText,
                 priceText: priceText,
                 isbnText: isbnText,
-                imageUpload: imageUpload
+                imageUpload: imageUpload,
             });
         },
         render: function() {
@@ -636,6 +671,7 @@
                             <td><h3>Feature 3</h3>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</td>
                         </tr>
                         </tbody></table>
+                        <div id='dashboard'></div>
                     </div>
             );
         }
