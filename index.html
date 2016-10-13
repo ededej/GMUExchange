@@ -6,6 +6,7 @@
     <link href="stylesheet.css" rel="stylesheet">
     <link href="search.css" rel="stylesheet">
     <link href="compatibility.css" rel="stylesheet">
+    <link href="dashBoard.css" rel="stylesheet"> <!--added extra padding at top of page-->
     <script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <!--<script type = "text/javascript" src = "myjavascript.js"></script>-->
     <script src="https://fb.me/react-15.0.0.js"></script>
@@ -15,6 +16,9 @@
     <script src="https://www.gstatic.com/firebasejs/3.4.0/firebase.js"></script>
     <!-- ReactFire -->
     <script src="https://cdn.firebase.com/libs/reactfire/1.0.0/reactfire.min.js"></script>
+    <!--D3JS-->
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <!--<script src="dashBoard.js"></script>-->
 </head>
 <body class = "body">
 
@@ -103,7 +107,7 @@
                 console.log("Matching email");
             }
         },
-// adding the user account into firebase
+        // adding the user account into firebase
         handleAdd: function (e) {
             var uid = this.refs.email.value;
             var uidCopy = uid;
@@ -120,7 +124,7 @@
                     alert('User with ' + uidCopy + ' has an account.\n' + "Sorry, we are not able to register you with this email.");
                     return false;
                 } else {
-                    console.log('Setting up');
+                    //console.log('Setting up');
                     // setting up the firebase with all the necessary fields
                     this.fireRef.child(uid).set(
                             {
@@ -625,6 +629,23 @@
     //HOME PAGE ******************************************************************************************************
 
     var HomePage = React.createClass({
+        //http://stackoverflow.com/questions/34424845/adding-script-tag-to-react-jsx
+        componentWillMount() {
+            const script = document.createElement("script");
+
+            script.src = "dashBoard.js";
+            script.async = true;
+
+            document.body.appendChild(script);
+        },
+        /*componentWillMount() {
+            const script = document.createElement("script");
+
+            script.src = "https://www.gstatic.com/firebasejs/3.4.0/firebase.js";
+            script.async = true;
+
+            document.body.appendChild(script);
+        },*/
         render: function () {
             return(
                     <div className = "bottomcolumns">
@@ -636,6 +657,7 @@
                             <td><h3>Feature 3</h3>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</td>
                         </tr>
                         </tbody></table>
+                        <div id='dashboard'></div>
                     </div>
             );
         }
