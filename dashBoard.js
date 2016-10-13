@@ -21,7 +21,7 @@ $(document).ready(function () {
         , {Month: 'April', freq: {textbooks: 15, classNotes: 6, classMaterials: 5, misc: 3}}
         , {Month: 'May', freq: {textbooks: 20, classNotes: 10, classMaterials: 7, misc: 80}}
         , {Month: 'June', freq: {textbooks: 50, classNotes: 5, classMaterials: 60, misc: 30}}
-        , {Month: 'July', freq: {textbooks: 14, classNotes: 0, classMaterials: 890, misc: 2}}
+        , {Month: 'July', freq: {textbooks: 14, classNotes: 0, classMaterials: 80, misc: 2}}
         , {Month: 'Aug', freq: {textbooks: 67, classNotes: 13, classMaterials: 10, misc: 24}}
         , {Month: 'Sep', freq: {textbooks: 130, classNotes: 15, classMaterials: 60, misc: 13}}
         , {Month: 'Oct', freq: {textbooks: 10, classNotes: 5, classMaterials: 10, misc: 9}}
