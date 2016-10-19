@@ -9,7 +9,7 @@
     <link href="dashBoard.css" rel="stylesheet"> <!--added extra padding at top of page-->
     <script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <!--<script type = "text/javascript" src = "myjavascript.js"></script>-->
-    <script src="https://fb.me/react-15.0.0.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.2/react-with-addons.js"></script>
     <script src="https://fb.me/react-dom-15.0.0.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
     <!-- Firebase -->
@@ -17,8 +17,14 @@
     <!-- ReactFire -->
     <script src="https://cdn.firebase.com/libs/reactfire/1.0.0/reactfire.min.js"></script>
     <!--D3JS-->
-    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="dashBoard.js"></script>
+    <!--Jasmine JS-->
+    <script type="text/javascript" src="jasmine/lib/jasmine-2.5.2/jasmine.js"></script>
+    <script type="text/javascript" src="jasmine/lib/jasmine-2.5.2/jasmine-html.js"></script>
+    <script type="text/javascript" src="jasmine/lib/jasmine-2.5.2/boot.js"></script>
+    <link rel="stylesheet" type="text/css" href="jasmine/lib/jasmine-2.5.2/jasmine.css">
+
 </head>
 <body class = "body">
 
@@ -709,9 +715,9 @@
             return(
                     <nav className = "menu">
                         <ul>
-                            <li className = "left" id = "homeLink" onClick={this.updateHomeView}>Home</li>
-                            <li className = "left" id = "searchLink" onClick={this.updateSearchView}>Search</li>
-                            <li className = "left" id = "postLink" onClick={this.updatePostView}>Post Item</li>
+                            <li className = "left1" id = "homeLink" onClick={this.updateHomeView}>Home</li>
+                            <li className = "left2" id = "searchLink" onClick={this.updateSearchView}>Search</li>
+                            <li className = "left3" id = "postLink" onClick={this.updatePostView}>Post Item</li>
                             <li className = "rightMenuLinks" id = "logInLink" onClick={this.updateLogInView}>Log In</li>
                             <li className = "rightMenuLinks" id = "signUpLink" onClick={this.updateSignUpView}>Sign Up</li>
                             <li id = "logOut">Log Out</li>
@@ -843,6 +849,29 @@
             <AppComponent />,
             document.getElementById('mountNode')
     );
+
+    //Jasmine testing the react
+
+    describe('SignUpPage', function () {
+        var TestUtils = React.addons.TestUtils;
+        var gmuAppComponent, element, renderedDOM;
+        beforeEach(function () {
+            element = React.createElement(AppComponent);
+            gmuAppComponent = TestUtils.renderIntoDocument(element);
+        });
+
+        it("Check Home Btn", function(){
+//            var node = this.refs.signUpButton;
+//            ReactTestUtils.Simulate.click(node);
+            let homeButton = TestUtils.scryRenderedDOMComponentsWithTag(gmuAppComponent,"input");
+            TestUtils.Simulate.click(homeButton);
+//            expect(homeButton)
+        });
+
+
+        });
+
+
 </script>
 <div id="mountNode">
     <!--Contains the rest of the website-->
