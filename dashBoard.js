@@ -1,18 +1,50 @@
 $(document).ready(function () {
 
+    var monthNames = ["Jan", "Feb", "March", "April", "May", "June",
+        "July", "Aug", "Sep", "Oct", "Nov", "Dec"
+    ];
+    var month;
+    var textbookTotal=[0,0,0,0,0,0];
+    var classNotesTotal;
+    var classMaterialsTotal;
+    var miscTotal;
+    var dataFirbase = [
+        {Month: 'Jan', freq: {textbooks: textbookTotal, classNotes: classNotesTotal, classMaterials: classMaterialsTotal, misc: miscTotal}}
+        , {Month: 'Feb', freq: {textbooks: 70, classNotes: 15, classMaterials: 10, misc: 10}}
+        , {Month: 'March', freq: {textbooks: 10, classNotes: 5, classMaterials: 5, misc: 17}}
+        , {Month: 'April', freq: {textbooks: 15, classNotes: 6, classMaterials: 5, misc: 3}}
+        , {Month: 'May', freq: {textbooks: 20, classNotes: 10, classMaterials: 7, misc: 80}}
+        , {Month: 'June', freq: {textbooks: 50, classNotes: 5, classMaterials: 60, misc: 30}}
+        , {Month: 'July', freq: {textbooks: 14, classNotes: 0, classMaterials: 890, misc: 2}}
+        , {Month: 'Aug', freq: {textbooks: 67, classNotes: 13, classMaterials: 10, misc: 24}}
+        , {Month: 'Sep', freq: {textbooks: 130, classNotes: 15, classMaterials: 60, misc: 13}}
+        , {Month: 'Oct', freq: {textbooks: 10, classNotes: 5, classMaterials: 10, misc: 9}}
+        , {Month: 'Nov', freq: {textbooks: 0, classNotes: 0, classMaterials: 0, misc: 0}}
+        , {Month: 'Dec', freq: {textbooks: 0, classNotes: 0, classMaterials: 0, misc: 0}}
+    ];
+    var fireRead = firebase.database().ref('products');
 
-    "use strict";
-    /*var firebase = require("firebase");
-     var config = {
-     apiKey: "AIzaSyD0i-jjYdLEq4iVrsnJ759fDWDO2t7Utao",
-     authDomain: "gmuexchange.firebaseapp.com",
-     databaseURL: "https://gmuexchange.firebaseio.com",
-     storageBucket: "gmuexchange.appspot.com",
-     messagingSenderId: "191322581126"
-     };
-     firebase.initializeApp(config);*/
-//fireRef.database();
-
+    fireRead.on("value",function (snapshot) {
+        snapshot.forEach(function(childSnapshot) {
+            var childData = childSnapshot.val();
+            var date=childData.postingDate;
+            var d=date.split("-");
+            var d=d[1];
+            var month=monthNames[d-1];
+            // console.log(month);
+            if (childData.category==="textbook"){
+                var priceStrign=childData.price;
+                textbookTotal[d]+=parseInt(priceStrign);
+                // console.log(textbookTotal[d]);
+            }else if (childData.category==="classNotes"){
+                // console.log(childData.description);
+            }else if (childData.category==="classMaterials"){
+                // console.log(childData.description);
+            }else{
+                // console.log(childData.description);
+            }
+        });
+    });
 
     var freqData = [
         {Month: 'Jan', freq: {textbooks: 120, classNotes: 20, classMaterials: 17, misc: 50}}
