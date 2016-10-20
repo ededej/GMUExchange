@@ -971,51 +971,30 @@
             document.getElementById('mountNode')
     );
 
-    describe("MainHeading", function(){
+    //Log In Page
+    describe("LogInPage", function(){
         var TestUtils = React.addons.TestUtils;
-        var mainHeadingComponent, element, renderedDOM;
-        beforeEach(function(done){
-            element = React.createElement(MainHeading);
-            mainHeadingComponent = TestUtils.renderIntoDocument(element);
-            mainHeadingComponent.setState({items: [{text: "testItem"}]}, done);
+        var LogInPageComponent, element, renderedDOM;
+        element = React.createElement(LogInPage);
+        beforeEach(function(done) {
+            LogInPageComponent = TestUtils.renderIntoDocument(element);
+            LogInPageComponent.setState({items: [{text: "testItem"}]}, done);
         });
-        it("Has a Log In button", function(){
-            let button = TestUtils.scryRenderedDOMComponentsWithTag(mainHeadingComponent,"button");
-            expect(button[0]).not.toBeUndefined();
-            expect(button[0].innerHTML).toBe("Log In");
+        it("Has an e-mail field", function(){
+            let emailField = TestUtils.scryRenderedDOMComponentsWithTag(LogInPageComponent,"email");
+            expect(emailField).toBeDefined();
+        });
+        it("Has a password field", function(){
+            let passwordField = TestUtils.scryRenderedDOMComponentsWithTag(LogInPageComponent,"password");
+            expect(passwordField).toBeDefined();
+        });
+        it("Has a sign up button", function(){
+            let logInButton = TestUtils.scryRenderedDOMComponentsWithTag(LogInPageComponent,"signUpButton");
+            expect(logInButton).toBeDefined();
         });
     });
-
-    describe("Menu", function(){
-        var TestUtils = React.addons.TestUtils;
-        var menuComponent, element, renderedDOM;
-        beforeEach(function(done){
-            element = React.createElement(Menu);
-            menuComponent = TestUtils.renderIntoDocument(element);
-            menuComponent.setState({items: [{text: "testItem"}]}, done);
-        });
-        it("Has a Home menu link", function(){
-            let navigationMenu = TestUtils.scryRenderedDOMComponentsWithTag(menuComponent,"li");
-            expect(navigationMenu[0].innerHTML).toBe("Home");
-        });
-        it("Has a Search menu link", function(){
-            let navigationMenu = TestUtils.scryRenderedDOMComponentsWithTag(menuComponent,"li");
-            expect(navigationMenu[1].innerHTML).toBe("Search");
-        });
-        it("Has a Post Item link", function(){
-            let navigationMenu = TestUtils.scryRenderedDOMComponentsWithTag(menuComponent,"li");
-            expect(navigationMenu[2].innerHTML).toBe("Post Item");
-        });
-        it("Has a Sign Up link", function(){
-            let navigationMenu = TestUtils.scryRenderedDOMComponentsWithTag(menuComponent,"li");
-            expect(navigationMenu[4].innerHTML).toBe("Sign Up");
-        });
-        it("Has a Log In link", function(){
-            let navigationMenu = TestUtils.scryRenderedDOMComponentsWithTag(menuComponent,"li");
-            expect(navigationMenu[3].innerHTML).toBe("Log In");
-        });
-
-    });
+    
+    //Sign Up Page
     describe('Sign Up', function () {
         var TestUtils = React.addons.TestUtils;
         var gmuComponentSignUp, element, renderedDOM;
@@ -1079,6 +1058,7 @@
 //            });
         });
 
+        //Post a Product Page
         describe('ProductRegistration', function () {
             var TestUtils = React.addons.TestUtils;
             var gmuComponentProdReg, element, renderedDOM;
@@ -1123,6 +1103,208 @@
             });
 
 
+    });
+    
+        //Search Page
+    describe("Results", function(){
+        var TestUtils = React.addons.TestUtils;
+        var resultsComponent, element, renderedDOM;
+        beforeEach(function(done){
+            element = React.createElement(Results);
+            resultsComponent = TestUtils.renderIntoDocument(element);
+            resultsComponent.setState({items: [{text: "testItem"}]}, done);
+        });
+        it("Has 6 table elements", function(){
+            let results = TestUtils.scryRenderedDOMComponentsWithTag(resultsComponent,"td");
+            expect(results.length).toBe(6);
+        });
+    });
+    describe("ActiveFilters", function(){
+        var TestUtils = React.addons.TestUtils;
+        var activeFiltersComponent, element, renderedDOM;
+        beforeEach(function(done){
+            element = React.createElement(ActiveFilters);
+            activeFiltersComponent = TestUtils.renderIntoDocument(element);
+            activeFiltersComponent.setState({items: [{text: "testItem"}]}, done);
+        });
+        it("Has a search results table", function(){
+            let activeFilters = TestUtils.scryRenderedDOMComponentsWithTag(activeFiltersComponent,"activeFilterItem");
+            expect(activeFilters).toBeDefined();
+        });
+    });
+    describe("SearchResultsTables", function(){
+        var TestUtils = React.addons.TestUtils;
+        var searchResultsTableComponent, element, renderedDOM;
+        element = React.createElement(SearchResultsTable);
+        searchResultsTableComponent = TestUtils.renderIntoDocument(element);
+        searchResultsTableComponent.setState({items: [{text: "testItem"}]}, done);
+        it("Has a search results table", function(){
+            let searchResultTable = TestUtils.scryRenderedDOMComponentsWithTag(searchResultsTableComponent,"searchResultTable");
+            expect(searchResultTable).toBeDefined();
+        });
+    });
+    describe("SearchBox", function(){
+        var TestUtils = React.addons.TestUtils;
+        var filterableSearchPageComponent, element, renderedDOM;
+        beforeEach(function(done){
+            element = React.createElement(SearchBox);
+            filterableSearchPageComponent = TestUtils.renderIntoDocument(element);
+            filterableSearchPageComponent.setState({items: [{text: "testItem"}]}, done);
+        });
+        it("Has a Search div element", function(){
+            let search = TestUtils.scryRenderedDOMComponentsWithTag(filterableSearchPageComponent,"searchBox");
+            expect(search).toBeDefined();
+        });
+        it("Has a Category div element", function(){
+            let category = TestUtils.scryRenderedDOMComponentsWithTag(filterableSearchPageComponent,"searchTermSelection");
+            expect(category).toBeDefined();
+        });
+        it("Has a Class div element", function(){
+            let classDiv = TestUtils.scryRenderedDOMComponentsWithTag(filterableSearchPageComponent,"classSearchTermInput");
+            expect(classDiv).toBeDefined();
+        });
+        it("Has a Professor div element", function(){
+            let professor = TestUtils.scryRenderedDOMComponentsWithTag(filterableSearchPageComponent,"professorSearchTermInput");
+            expect(professor).toBeDefined();
+        });
+        it("Has a Maximum Price div element", function(){
+            let price = TestUtils.scryRenderedDOMComponentsWithTag(filterableSearchPageComponent,"priceSearchTermInput");
+            expect(price).toBeDefined();
+        });
+        it("Has a Posted Date div element", function(){
+            let postedDate = TestUtils.scryRenderedDOMComponentsWithTag(filterableSearchPageComponent,"dateSearchTermInput");
+            expect(postedDate).toBeDefined();
+        });
+    });
+    describe("FilterableSearchPage", function(){
+        var TestUtils = React.addons.TestUtils;
+        var filterableSearchPageComponent, element, renderedDOM;
+        element = React.createElement(FilterableSearchPage);
+        filterableSearchPageComponent = TestUtils.renderIntoDocument(element);
+        filterableSearchPageComponent.setState({items: [{text: "testItem"}]}, done);
+        it("Has a Search Box div element", function(){
+            let searchBox = TestUtils.scryRenderedDOMComponentsWithTag(filterableSearchPageComponent,"SearchBox");
+            expect(searchBox).toBeDefined();
+        });
+        it("Has a Search Results div element", function(){
+            let searchResultsPage = TestUtils.scryRenderedDOMComponentsWithTag(filterableSearchPageComponent,"SearchResultsPage");
+            expect(searchResultsPage).toBeDefined();
+        });
+    });
+
+    //Home Page
+    describe("HomePage", function(){
+        var TestUtils = React.addons.TestUtils;
+        var homePageComponent, element, renderedDOM;
+        beforeEach(function(done){
+            element = React.createElement(HomePage);
+            homePageComponent = TestUtils.renderIntoDocument(element);
+            homePageComponent.setState({items: [{text: "testItem"}]}, done);
+        });
+        it("Has 3 Feature Columns", function(){
+            let columns = TestUtils.scryRenderedDOMComponentsWithTag(homePageComponent,"h3");
+            expect(columns.length).toBe(3);
+        });
+    });
+
+    //Reused Items
+    describe("Menu", function(){
+        var TestUtils = React.addons.TestUtils;
+        var menuComponent, element, renderedDOM;
+        beforeEach(function(done){
+            element = React.createElement(Menu);
+            menuComponent = TestUtils.renderIntoDocument(element);
+            menuComponent.setState({items: [{text: "testItem"}]}, done);
+        });
+        it("Has a Home menu link", function(){
+            let navigationMenu = TestUtils.scryRenderedDOMComponentsWithTag(menuComponent,"li");
+            expect(navigationMenu[0].innerHTML).toBe("Home");
+        });
+        it("Has a Search menu link", function(){
+            let navigationMenu = TestUtils.scryRenderedDOMComponentsWithTag(menuComponent,"li");
+            expect(navigationMenu[1].innerHTML).toBe("Search");
+        });
+        it("Has a Post Item link", function(){
+            let navigationMenu = TestUtils.scryRenderedDOMComponentsWithTag(menuComponent,"li");
+            expect(navigationMenu[2].innerHTML).toBe("Post Item");
+        });
+        it("Has a Sign Up link", function(){
+            let navigationMenu = TestUtils.scryRenderedDOMComponentsWithTag(menuComponent,"li");
+            expect(navigationMenu[4].innerHTML).toBe("Sign Up");
+        });
+        it("Has a Log In link", function(){
+            let navigationMenu = TestUtils.scryRenderedDOMComponentsWithTag(menuComponent,"li");
+            expect(navigationMenu[3].innerHTML).toBe("Log In");
+        });
+    });
+    describe("Footer", function(){
+        var TestUtils = React.addons.TestUtils;
+        var footerComponent, element, renderedDOM;
+        beforeEach(function(done){
+            element = React.createElement(Footer);
+            footerComponent = TestUtils.renderIntoDocument(element);
+            footerComponent.setState({items: [{text: "testItem"}]}, done);
+        });
+        it("Lists SWE 432", function(){
+            let footer = TestUtils.scryRenderedDOMComponentsWithTag(footerComponent,"h3");
+            expect(footer[0].innerHTML).toBe("SWE 432");
+        });
+        it("Lists Dayana Hudson", function(){
+            let footer = TestUtils.scryRenderedDOMComponentsWithTag(footerComponent,"p");
+            expect(footer[0].innerHTML).toBe("Dayana Hudson");
+        });
+        it("Lists Ermal Dedej", function(){
+            let footer = TestUtils.scryRenderedDOMComponentsWithTag(footerComponent,"p");
+            expect(footer[1].innerHTML).toBe("Ermal Dedej");
+        });
+        it("Lists GitHub and links to repository", function(){
+            let footer = TestUtils.scryRenderedDOMComponentsWithTag(footerComponent,"p");
+            expect(footer[2].innerHTML).toBe('<a href="https://github.com/dayanahudson/GMUExchange/">GitHub</a>');
+        });
+    });
+    describe("SectionHeading", function(){
+        var TestUtils = React.addons.TestUtils;
+        var sectionHeadingComponent, element, renderedDOM;
+        beforeEach(function(done){
+            element = React.createElement(SectionHeading);
+            sectionHeadingComponent = TestUtils.renderIntoDocument(element);
+            sectionHeadingComponent.setState({items: [{text: "testItem"}]}, done);
+        });
+        it("Has title: 'GMUExchange'", function(){
+            let sectionHeading = TestUtils.scryRenderedDOMComponentsWithTag(sectionHeadingComponent,"h1");
+            expect(sectionHeading[0].innerHTML).toBe("GMUExchange");
+        });
+    });
+    describe("MainHeading", function(){
+        var TestUtils = React.addons.TestUtils;
+        var mainHeadingComponent, element, renderedDOM;
+        beforeEach(function(done){
+            element = React.createElement(MainHeading);
+            mainHeadingComponent = TestUtils.renderIntoDocument(element);
+            mainHeadingComponent.setState({items: [{text: "testItem"}]}, done);
+        });
+        it("Has a Log In button", function(){
+            let button = TestUtils.scryRenderedDOMComponentsWithTag(mainHeadingComponent,"button");
+            expect(button[0]).not.toBeUndefined();
+            expect(button[0].innerHTML).toBe("Log In");
+        });
+    });
+    describe("AppComponent", function(){
+        var TestUtils = React.addons.TestUtils;
+        var appComponent, element, renderedDOM;
+        beforeEach(function(done){
+            element = React.createElement(AppComponent);
+            appComponent = TestUtils.renderIntoDocument(element);
+            appComponent.setState({items: [{text: "testItem"}]}, done);
+        });
+        it("Has a Menu div element", function(){
+            let menu = TestUtils.scryRenderedDOMComponentsWithTag(appComponent,"Menu");
+            expect(menu).toBeDefined();
+        });
+        it("Has a Footer div element", function(){
+            let footer = TestUtils.scryRenderedDOMComponentsWithTag(appComponent,"Footer");
+            expect(footer).toBeDefined();
+        });
     });
 
 </script>
