@@ -270,7 +270,7 @@
                                     <td>Category:</td>
                                     <td><select name="searchTermSelection" type="select" ref="select"
                                                 value={this.state.value}
-                                                onChange={this.handleChange}>>
+                                                onChange={this.handleChange}>
                                         <option name="category" value="textbook">--select one--</option>
                                         <option name="category" value="textbook">Textbook</option>
                                         <option name="category" value="classNotes">Class Notes</option>
@@ -1029,34 +1029,77 @@
             expect(button[0]).not.toBeUndefined();
             expect(button[0].innerHTML).toBe("Sign Up");
         });
-//        describe("New Sing Up", function () {
-//            beforeEach(function () {
-//                spyOn(gmuComponentSignUp.fireRef, "set");
+        it("Checking for number of inputs", function(){
+            var inputs = TestUtils.scryRenderedDOMComponentsWithTag(gmuComponentSignUp,"input");
+            expect(inputs.length).toEqual(5); //passes
+        });
+        describe("New Sing Up cause firebase to create a user", function () {
+            beforeEach(function () {
+                var uid = "ededej43@gmu.edu";
+                uid = uid.replace(/\./g, '%20');
+                spyOn(gmuComponentSignUp.fireRef.child(uid), "set");
+            });
+            it("Updates firebase with text changed", function(){
+                var inputs = TestUtils.scryRenderedDOMComponentsWithTag(gmuComponentSignUp,"input");
+                inputs[0].value = "ededej432@gmu%20edu";
+                inputs[1].value = "Pass";
+                inputs[2].value = "Pass";
+                inputs[3].value = "Name";
+                inputs[4].value = "Last";
+                TestUtils.Simulate.change(inputs[0]);
+                TestUtils.Simulate.change(inputs[1]);
+                TestUtils.Simulate.change(inputs[2]);
+                TestUtils.Simulate.change(inputs[3]);
+                TestUtils.Simulate.change(inputs[4]);
+                expect(inputs[0].value).toBe("ededej432@gmu%20edu");
+                expect(inputs[1].value).toBe("Pass");
+                expect(inputs[2].value).toBe("Pass");
+                expect(inputs[3].value).toBe("Name");
+                expect(inputs[4].value).toBe("Last");
+
+            });
+
+//            it("Causes fireBase set to be called", function () {
+//                var uid = "ededej43@gmu.edu";
+//                uid = uid.replace(/\./g, '%20');
+//                let button = TestUtils.scryRenderedDOMComponentsWithTag(gmuComponentSignUp, "button");
+//                TestUtils.Simulate.click(button[0]);
+//                expect(gmuComponentSignUp.fireRef.child(uid).set).toHaveBeenCalledWith({"FirstName": "Eri",
+//                    "LastName":"",
+//                    "Email":"",
+//                    "Password": ""
+//                });
 //            });
-////            it("Causes fireBase set to be called", function () {
-////                let button = TestUtils.scryRenderedDOMComponentsWithTag(gmuComponentSignUp, "button");
-////                TestUtils.Simulate.click(button[0]);
-////                expect(gmuComponentSignUp.fireRef.set).toHaveBeenCalledWith({"FirstName": "",
-////                    "LastName":"",
-////                    "Email":"",
-////                    "Password": ""});
-////            });
-//            it("Updates firebase when text is changed", function(){
-////                var setSpy;
-////                setSpy = jasmine.createSpy("set");
-////                spyOn(gmuComponentSignUp.fireRef, "child").and.returnValue({set : setSpy});
+
+//            it("Updates firebase when text is changed with set", function(){
+//                var setSpy;
+//                var uid = "ededej@gmu.edu";
+//                setSpy = jasmine.createSpy("set");
+//                uid = uid.replace(/\./g, '%20');
+//                spyOn(gmuComponentSignUp.fireRef.child(uid), "child").and.returnValue({set : setSpy});
 //                var inputs = TestUtils.scryRenderedDOMComponentsWithTag(gmuComponentSignUp,"input");
-//                inputs[0].value = "Email";
+//                inputs[0].value = "ededej432@gmu%20edu";
 //                inputs[1].value = "Pass";
-//                inputs[2].value = "RePass";
+//                inputs[2].value = "Pass";
 //                inputs[3].value = "Name";
 //                inputs[4].value = "Last";
 //                TestUtils.Simulate.change(inputs[0]);
-//                expect(inputs[0].innerHTML).toBe("Email");
-////                expect(gmuComponentSignUp.fireRef.child).toHaveBeenCalled();
-////                expect(setSpy).toHaveBeenCalledWith({text: "Email"});
+//                TestUtils.Simulate.change(inputs[1]);
+//                TestUtils.Simulate.change(inputs[2]);
+//                TestUtils.Simulate.change(inputs[3]);
+//                TestUtils.Simulate.change(inputs[4]);
+//                expect(inputs[0].value).toBe("ededej432@gmu%20edu");
+//                let button = TestUtils.scryRenderedDOMComponentsWithTag(gmuComponentSignUp, "button");
+//                TestUtils.Simulate.click(button[0]);
+//                expect(gmuComponentSignUp.fireRef.child(uid).set).toHaveBeenCalled();
+//                expect(setSpy).toHaveBeenCalledWith({"FirstName": "Name",
+//                    "LastName":"Last",
+//                    "Email":"ededej432@gmu%20edu",
+//                    "Password": "Pass"});
 //            });
+
         });
+    });
 
         //Post a Product Page
         describe('ProductRegistration', function () {
@@ -1096,12 +1139,57 @@
                 let form = TestUtils.scryRenderedDOMComponentsWithTag(gmuComponentProdReg, "td");
                 expect(form[12].innerHTML).toBe("Image:");
             });
-            it("Checking for Submit Button ", function(){
-                let button = TestUtils.scryRenderedDOMComponentsWithTag(gmuComponentProdReg,"button");
+            it("Checking for Submit Button ", function() {
+                let button = TestUtils.scryRenderedDOMComponentsWithTag(gmuComponentProdReg, "button");
                 expect(button[0]).not.toBeUndefined();
                 expect(button[0].innerHTML).toBe("Submit");
             });
+            describe("New ProductRegistration Firebase Interaction", function () {
+                beforeEach(function () {
+                    spyOn(gmuComponentProdReg.firePostProduct, "push");
+                });
+                it("Causes fireBase push to be called", function () {
+                    var date = new Date().toJSON().slice(0, 10);
+                    let button = TestUtils.scryRenderedDOMComponentsWithTag(gmuComponentProdReg, "button");
+                    TestUtils.Simulate.click(button[0]);
+                    expect(gmuComponentProdReg.firePostProduct.push).toHaveBeenCalledWith({"category":"textbook",
+                            "className": "",
+                            "description": "",
+                            "professor": "",
+                            "price": "",
+                            "isbn": "",
+                            "image": "",
+                            "postingDate": date,
+                            "sellerid": ""});
+                    });
+                it("Checking for number of inputs in Product", function(){
+                    var inputs = TestUtils.scryRenderedDOMComponentsWithTag(gmuComponentProdReg,"input");
+                    expect(inputs.length).toEqual(6); //passes
+                });
+//                it("Updates firebase with text changed", function(){
+//                    var inputs = TestUtils.scryRenderedDOMComponentsWithTag(gmuComponentProdReg,"input");
+//                    inputs[0].value = "1235";
+//                    inputs[1].value = "Book";
+//                    inputs[2].value = "CS432";
+//                    inputs[3].value = "120.45";
+//                    inputs[4].value = "James";
+//                    inputs[5].value = "";
+//
+//                    TestUtils.Simulate.change(inputs[0]);
+//                    TestUtils.Simulate.change(inputs[1]);
+//                    TestUtils.Simulate.change(inputs[2]);
+//                    TestUtils.Simulate.change(inputs[3]);
+//                    TestUtils.Simulate.change(inputs[4]);
+//                    expect(inputs[0].value).toBe("1235");
+//                    expect(inputs[1].value).toBe("Book");
+//                    expect(inputs[2].value).toBe("CS432");
+//                    expect(inputs[3].value).toBe("120.45");
+//                    expect(inputs[4].value).toBe("James");
+//                    expect(inputs[5].value).toBe("");
+//
+//                });
 
+                });
 
     });
     
@@ -1310,13 +1398,8 @@
 </script>
 <div id="mountNode">
     <!--Contains the rest of the website-->
-    sdf
+
 </div>
 </body>
 </html>
 
-
-<!--{"FirstName": "",-->
-<!--"LastName":"",-->
-<!--"Email":"",-->
-<!--"Password": ""}-->
