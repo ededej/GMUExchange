@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!--title to be updated by each view's JS-->
-    <title></title>
+    <title></title><!--title to be updated by each view-->
+
     <link href="stylesheet.css" rel="stylesheet">
     <link href="search.css" rel="stylesheet">
     <link href="compatibility.css" rel="stylesheet">
-    <link href="dashBoard.css" rel="stylesheet"> <!--added extra padding at top of page-->
-    <script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <link href="dashBoard.css" rel="stylesheet">
     <!--<script type = "text/javascript" src = "myjavascript.js"></script>-->
-    <script src="https://fb.me/react-15.0.0.js"></script>
+
+    <script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <!--React without addons: <script src="https://fb.me/react-15.0.0.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.2/react-with-addons.js"></script>
     <script src="https://fb.me/react-dom-15.0.0.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
     <!-- Firebase -->
@@ -19,10 +21,20 @@
     <!--D3JS-->
     <script src="https://d3js.org/d3.v3.min.js"></script>
     <script src="dashBoard.js"></script>
+    <!--Jasmine-->
+    <link rel="shortcut icon" type="image/png" href="jasmine/lib/jasmine-2.5.2/jasmine_favicon.png">
+    <link rel="stylesheet" type="text/css" href="jasmine/lib/jasmine-2.5.2/jasmine.css">
+    <script type="text/javascript" src="jasmine/lib/jasmine-2.5.2/jasmine.js"></script>
+    <script type="text/javascript" src="jasmine/lib/jasmine-2.5.2/jasmine-html.js"></script>
+    <script type="text/javascript" src="jasmine/lib/jasmine-2.5.2/boot.js"></script>
 </head>
 <body class = "body">
-
 <script type="text/babel">
+    //$(document).ready(function() {
+    //"use strict";
+    //var React = require('react');
+    //var ReactDOM = require('react-DOM');
+
     //FIREBASE *********************************************************************************************************
     "use strict";
     var config = {
@@ -38,23 +50,26 @@
 
     var LogInPage = React.createClass({
         render: function () {
-            return(
-                    <form className = "creds">
-                        <table className = "formTable"><tbody>
-                        <tr>
-                            <td>Email:</td>
-                            <td>
-                                <input className="input" type="text" id = "email" placeholder="GMU e-mail" pattern="[a-z0-9]*@(masonlive\\.)?gmu\\.edu" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Password:</td>
-                            <td>
-                                <input className="input" type="password" id = "password" placeholder = "Password" />
-                            </td>
-                        </tr>
-                        </tbody></table>
-                        <button className = "tableButton button" id = "signUpButton">Log In</button>
+            return (
+                    <form className="creds">
+                        <table className="formTable">
+                            <tbody>
+                            <tr>
+                                <td>Email:</td>
+                                <td>
+                                    <input className="input" type="text" id="email" placeholder="GMU e-mail"
+                                           pattern="[a-z0-9]*@(masonlive\\.)?gmu\\.edu"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Password:</td>
+                                <td>
+                                    <input className="input" type="password" id="password" placeholder="Password"/>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <button className="tableButton button" id="signUpButton">Log In</button>
                     </form>
             );
         }
@@ -65,11 +80,12 @@
     var SignUpPage = React.createClass({
         mixins: [ReactFireMixin],
         getInitialState: function () {
-            return {email:'',
-                password:'',
-                fName:'',
-                lName:'',
-                matchPwd:''
+            return {
+                email: '',
+                password: '',
+                fName: '',
+                lName: '',
+                matchPwd: ''
 
             };
             this.checkPassword = this.checkPassword.bind(this);
@@ -80,30 +96,30 @@
         },
 
         //on change
-        handleChange: function(event) {
-            if(this.refs.password.value !== this.refs.confirmPwd.value){
+        handleChange: function (event) {
+            if (this.refs.password.value !== this.refs.confirmPwd.value) {
                 console.log("Not valid");
-            }else{
+            } else {
                 console.log("valid");
 
             }
         },
 
         // Checking if the user put the same password on both fields
-        checkPassword: function(event){
-            if(this.refs.password.value !== this.refs.confirmPwd.value ) {
-                this.setState({ matchPwd: "Passwords don't match" });
-            }else{
-                this.setState({ matchPwd: "" });
+        checkPassword: function (event) {
+            if (this.refs.password.value !== this.refs.confirmPwd.value) {
+                this.setState({matchPwd: "Passwords don't match"});
+            } else {
+                this.setState({matchPwd: ""});
             }
 
 
         },
         // checking if the email match the pattern
-        checkEmail: function(event){
-            if(this.refs.email.value !== '[a-z0-9]*@(masonlive\\.)?gmu\\.edu') {
+        checkEmail: function (event) {
+            if (this.refs.email.value !== '[a-z0-9]*@(masonlive\\.)?gmu\\.edu') {
                 console.log("Not matching email");
-            }else{
+            } else {
                 console.log("Matching email");
             }
         },
@@ -139,58 +155,60 @@
         },
         //render function
         render: function () {
-            return(
-                    <form className = "creds">
-                        <table className = "formTable"><tbody>
-                        <tr>
-                            <td>Email:</td>
-                            <td>
-                                <input className="input" type="text" id = "email" placeholder="GMU e-mail"
-                                       ref="email"
-                                       pattern="[a-z0-9]*@(masonlive\\.)?gmu\\.edu"
-                                       onChange={this.checkEmail}/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Password:</td>
-                            <td>
-                                <input className="input" type="password" id = "password"
-                                       ref="password"
-                                       placeholder = "Password" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Confirm Password:</td>
-                            <td>
-                                <input className="input" type="password" id = "password"
-                                       placeholder = "Password"
-                                       onChange={this.checkPassword}
-                                       ref="confirmPwd"
-                                />
-                            </td>
-                            <td>
-                                <p id="matchPwd" ref="matchPwd" style={{fontSize:'15px', color:'red'}}>{this.state.matchPwd}</p>
+            return (
+                    <form className="creds">
+                        <table className="formTable">
+                            <tbody>
+                            <tr>
+                                <td>Email:</td>
+                                <td>
+                                    <input className="input" type="text" id="email" placeholder="GMU e-mail"
+                                           ref="email"
+                                           pattern="[a-z0-9]*@(masonlive\\.)?gmu\\.edu"
+                                           onChange={this.checkEmail}/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Password:</td>
+                                <td>
+                                    <input className="input" type="password" id="password"
+                                           ref="password"
+                                           placeholder="Password"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Confirm Password:</td>
+                                <td>
+                                    <input className="input" type="password" id="password"
+                                           placeholder="Password"
+                                           onChange={this.checkPassword}
+                                           ref="confirmPwd"
+                                    />
+                                </td>
+                                <td>
+                                    <p id="matchPwd" ref="matchPwd"
+                                       style={{fontSize: '15px', color: 'red'}}>{this.state.matchPwd}</p>
 
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>First name:</td>
-                            <td>
-                                <input className="input"ref="fName"
-                                       type="text" id="firstName" placeholder = "First Name" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Last name:</td>
-                            <td>
-                                <input className="input"  ref="lName" type="text" id="lastName" placeholder = "Last Name" />
-                            </td>
-                        </tr>
-                        <tr>
-                        </tr>
-                        </tbody>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>First name:</td>
+                                <td>
+                                    <input className="input" ref="fName"
+                                           type="text" id="firstName" placeholder="First Name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Last name:</td>
+                                <td>
+                                    <input className="input" ref="lName" type="text" id="lastName" placeholder="Last Name"/>
+                                </td>
+                            </tr>
+                            <tr>
+                            </tr>
+                            </tbody>
                         </table>
-                        <button className = "tableButton button" id = "signUpButton" onClick={this.handleAdd}>Sign Up</button>
+                        <button className="tableButton button" id="signUpButton" onClick={this.handleAdd}>Sign Up</button>
                     </form>
             );
         }
@@ -198,14 +216,14 @@
     //POST A PRODUCT PAGE **********************************************************************************************
     var ProductRegistration = React.createClass({
         //http://stackoverflow.com/questions/29108779/how-to-get-selected-value-of-a-dropdown-menu-in-reactjs
-                getInitialState:function () {
-                    return{
-                            value: 'All'
-                    };
-                  },
-           mixins: [ReactFireMixin],
+        getInitialState: function () {
+            return {
+                value: 'All'
+            };
+        },
+        mixins: [ReactFireMixin],
 
-        handleChange: function() {
+        handleChange: function () {
             this.props.onUserInput(
                     this.setState({value: event.target.value}),//this.refs.categorySelection.value,
                     this.refs.descriptionTextInput.value,
@@ -222,110 +240,114 @@
         handleAdd: function (e) {
             //            var date = new Date().toDateString(); // getting the date when the user post the items
             // setting up the firebase with all the necessary fields
-            var date=new Date().toJSON().slice(0,10);
+            var date = new Date().toJSON().slice(0, 10);
             this.firePostProduct.push(
                     {
                         category: this.refs.select.value,
                         className: this.refs.classTextInput.value,
                         description: this.refs.descriptionTextInput.value,
                         professor: this.refs.professorTextInput.value,
-                        price:this.refs.priceTextInput.value,
+                        price: this.refs.priceTextInput.value,
                         isbn: this.refs.isbnTextInput.value,
                         image: this.refs.imageUploadInput.value,
                         postingDate: date,
-                        sellerid:''
+                        sellerid: ''
                     });
             //}
             //}.bind(this));
         },
-        render: function() {
+        render: function () {
             /*console.log('cat: ' + this.props.categorySelection + 'desc: '+ this.props.descriptionText +
              ' class: ' + this.props.classText + ' professor:' + this.props.professorText +
              ' price: ' +this.props.priceText + 'isbn: ' + this.props.isbnText +
              ' image: ' + this.props.imageUpload);*/
-            return(
+            return (
                     <div>
-                        <form className = "creds">
-                            <table className = "formTable"><tbody>
-                            <tr>
-                                <td>Category: </td>
-                                <td><select name="searchTermSelection" type="select" ref="select" value={this.state.value}
-                                            onChange={this.handleChange}>>
-                                    <option name = "category" value="textbook">--select one--</option>
-                                    <option name = "category" value="textbook">Textbook</option>
-                                    <option name = "category" value="classNotes">Class Notes</option>
-                                    <option name = "category" value="classMaterials">Class Materials</option>
-                                    <option name = "category" value="misc">Miscellaneous</option>
-                                </select>
-                                </td>
-                                <td>ISBN: </td>
-                                <td><input
-                                        className = "input"
-                                        type="text"
-                                        placeholder = "ISBN"
-                                        value={this.props.isbnText}
-                                        ref="isbnTextInput"
-                                        onChange={this.handleChange}
-                                        id = "productSubmissionISBN"
-                                /></td>
-                            </tr>
-                            <tr>
-                                <td>Item Description: </td>
-                                <td><input
-                                        className = "input"
-                                        type = "text"
-                                        placeholder = "Description"
-                                        value={this.props.descriptionText}
-                                        ref="descriptionTextInput"
-                                        onChange={this.handleChange}
-                                        id = "productSubmissionDescription"
-                                /></td>
-                                <td>Class: </td>
-                                <td><input
-                                        className = "input"
-                                        type="text"
-                                        placeholder = "Class"
-                                        value={this.props.classText}
-                                        ref="classTextInput"
-                                        onChange={this.handleChange}
-                                        id = "productSubmissionClass"
-                                /></td>
-                            </tr>
-                            <tr>
-                                <td>Price: </td>
-                                <td><input
-                                        className = "input"
-                                        type="text"
-                                        placeholder = "Price"
-                                        value={this.props.priceText}
-                                        ref="priceTextInput"
-                                        onChange={this.handleChange}
-                                        id = "productSubmissionPrice"
-                                /></td>
-                                <td>Professor: </td>
-                                <td><input
-                                        className = "input"
-                                        type="text"
-                                        placeholder = "Professor"
-                                        value={this.props.professorText}
-                                        ref="professorTextInput"
-                                        onChange={this.handleChange}
-                                        id = "productSubmissionProfessor"
-                                /></td>
-                            </tr>
-                            <tr>
-                                <td>Image: </td>
-                                <td><input
-                                        className = "input"
-                                        type="file"
-                                        value={this.props.imageUpload}
-                                        ref="imageUploadInput"
-                                        onChange={this.handleChange}
-                                        id = "productSubmissionFile"
-                                /></td>
-                            </tr>
-                            </tbody></table>
-                            <button className = "tableButton button" id = "signUpButton" onClick={this.handleAdd}>Submit</button>
+                        <form className="creds">
+                            <table className="formTable">
+                                <tbody>
+                                <tr>
+                                    <td>Category:</td>
+                                    <td><select name="searchTermSelection" type="select" ref="select"
+                                                value={this.state.value}
+                                                onChange={this.handleChange}>>
+                                        <option name="category" value="textbook">--select one--</option>
+                                        <option name="category" value="textbook">Textbook</option>
+                                        <option name="category" value="classNotes">Class Notes</option>
+                                        <option name="category" value="classMaterials">Class Materials</option>
+                                        <option name="category" value="misc">Miscellaneous</option>
+                                    </select>
+                                    </td>
+                                    <td>ISBN:</td>
+                                    <td><input
+                                            className="input"
+                                            type="text"
+                                            placeholder="ISBN"
+                                            value={this.props.isbnText}
+                                            ref="isbnTextInput"
+                                            onChange={this.handleChange}
+                                            id="productSubmissionISBN"
+                                    /></td>
+                                </tr>
+                                <tr>
+                                    <td>Item Description:</td>
+                                    <td><input
+                                            className="input"
+                                            type="text"
+                                            placeholder="Description"
+                                            value={this.props.descriptionText}
+                                            ref="descriptionTextInput"
+                                            onChange={this.handleChange}
+                                            id="productSubmissionDescription"
+                                    /></td>
+                                    <td>Class:</td>
+                                    <td><input
+                                            className="input"
+                                            type="text"
+                                            placeholder="Class"
+                                            value={this.props.classText}
+                                            ref="classTextInput"
+                                            onChange={this.handleChange}
+                                            id="productSubmissionClass"
+                                    /></td>
+                                </tr>
+                                <tr>
+                                    <td>Price:</td>
+                                    <td><input
+                                            className="input"
+                                            type="text"
+                                            placeholder="Price"
+                                            value={this.props.priceText}
+                                            ref="priceTextInput"
+                                            onChange={this.handleChange}
+                                            id="productSubmissionPrice"
+                                    /></td>
+                                    <td>Professor:</td>
+                                    <td><input
+                                            className="input"
+                                            type="text"
+                                            placeholder="Professor"
+                                            value={this.props.professorText}
+                                            ref="professorTextInput"
+                                            onChange={this.handleChange}
+                                            id="productSubmissionProfessor"
+                                    /></td>
+                                </tr>
+                                <tr>
+                                    <td>Image:</td>
+                                    <td><input
+                                            className="input"
+                                            type="file"
+                                            value={this.props.imageUpload}
+                                            ref="imageUploadInput"
+                                            onChange={this.handleChange}
+                                            id="productSubmissionFile"
+                                    /></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <button className="tableButton button" id="signUpButton" onClick={this.handleAdd}>Submit
+                            </button>
                         </form>
                     </div>
             );
@@ -333,9 +355,9 @@
     });
 
     var UserWelcome = React.createClass({
-        render: function() {
-            return(
-                    <div className = "center">
+        render: function () {
+            return (
+                    <div className="center">
                         <h3>To post a product, please fill out the following form:</h3>
                     </div>
             );
@@ -343,7 +365,7 @@
     });
 
     var PostAProductPage = React.createClass({
-        getInitialState: function() {
+        getInitialState: function () {
             return {
                 categorySelection: '--select one--',
                 descriptionText: '',
@@ -352,10 +374,10 @@
                 priceText: '',
                 isbnText: '',
                 imageUpload: '',
-                date:''
+                date: ''
             }
         },
-        handleUserInput: function(categorySelection,descriptionText,classText,professorText,priceText,isbnText,imageUpload) {
+        handleUserInput: function (categorySelection, descriptionText, classText, professorText, priceText, isbnText, imageUpload) {
             this.setState({
                 categorySelection: categorySelection,
                 descriptionText: descriptionText,
@@ -366,9 +388,9 @@
                 imageUpload: imageUpload,
             });
         },
-        render: function() {
+        render: function () {
             return (
-                    <div className = "body pageContent">
+                    <div className="body pageContent">
                         <UserWelcome
                                 user={this.props.user}
                         />
@@ -389,7 +411,7 @@
     //SEARCH PAGE ******************************************************************************************************
     //starting point: https://facebook.github.io/react/docs/thinking-in-react.html
     var Results = React.createClass({
-        render: function() {
+        render: function () {
             return (
                     <tr>
                         <td>{this.props.image}</td>
@@ -407,54 +429,56 @@
     // removeItem functionality: view-source:https://gmu-swe432.github.io/lecture10demos/public/06bonusreact/
     // <button className = "activeFilterDeselecter" onClick={() => {_this.props.removeItem(this.props.filter)}}>x</button>
     var ActiveFilters = React.createClass({
-        render: function() {
+        render: function () {
             return (
-                    <td><div className = "activeFilterItem">{this.props.name}: {this.props.value}</div></td>
+                    <td>
+                        <div className="activeFilterItem">{this.props.name}: {this.props.value}</div>
+                    </td>
             );
         }
     });
 
     var SearchResultsTable = React.createClass({
-        render: function() {
+        render: function () {
             var rows = [];
             var keyword = this.props.filterKeywordText;
             var className = this.props.filterClassText;
             var professor = this.props.filterProfessorText;
             var price = parseFloat(this.props.filterPriceMax);
             //var date = this.props.filterDate;
-            this.props.items.forEach(function(item) {
+            this.props.items.forEach(function (item) {
                 //console.log('id: '+item.id);
                 var keywordRegex = new RegExp('');
                 var classNameRegex = new RegExp('');
                 var professorRegex = new RegExp('');
-                if(item.description != null) {
+                if (item.description != null) {
                     keywordRegex = new RegExp('.*');
                 }
-                if(item.className != null) {
+                if (item.className != null) {
                     classNameRegex = new RegExp('.*');
                 }
-                if(item.professor != null) {
+                if (item.professor != null) {
                     professorRegex = new RegExp('.*');
                 }
                 var keywordMatch = "";
                 var classNameMatch = "";
                 var professorMatch = "";
-                if(keyword.length > 0 && item.description != null) {
+                if (keyword.length > 0 && item.description != null) {
                     keywordRegex = new RegExp('.*' + keyword.toLowerCase() + '.*');
                 }
-                if(item.description != null){
+                if (item.description != null) {
                     keywordMatch = keywordRegex.exec(item.description.toLowerCase());
                 }
-                if(className.length > 0 && item.className != null) {
+                if (className.length > 0 && item.className != null) {
                     classNameRegex = new RegExp('.*' + className.toLowerCase() + '.*');
                 }
-                if(item.className != null){
+                if (item.className != null) {
                     classNameMatch = classNameRegex.exec(item.className.toLowerCase());
                 }
-                if(professor.length > 0 && item.professor != null){
+                if (professor.length > 0 && item.professor != null) {
                     professorRegex = new RegExp('.*' + professor.toLowerCase() + '.*');
                 }
-                if(item.professor != null){
+                if (item.professor != null) {
                     professorMatch = professorRegex.exec(item.professor.toLowerCase());
                 }
                 //console.log(keywordMatch+classNameMatch+professorMatch);
@@ -462,10 +486,9 @@
                         (price > parseFloat(item.price) &&
                                 ( (item.category == "Miscellaneous" && className == '' && professor == '') ||
                                 ((classNameMatch != null && classNameMatch.length > 0) && professorMatch != null))
-                        ))
-                {
+                        )) {
                     //console.log('item pushed');
-                    rows.push(<Results image = {item.image}
+                    rows.push(<Results image={item.image}
                                        description={item.description}
                                        className={item.className}
                                        professor={item.professor}
@@ -475,10 +498,17 @@
                 }
             }.bind(this));
             return (
-                    <div className = "search" data-list-size="4">
-                        <table className = "searchResultTable">
+                    <div className="search" data-list-size="4">
+                        <table className="searchResultTable">
                             <thead>
-                            <tr><th>Image</th><th>Description</th><th>Class</th><th>Professor</th><th>Price</th><th>Category</th></tr>
+                            <tr>
+                                <th>Image</th>
+                                <th>Description</th>
+                                <th>Class</th>
+                                <th>Professor</th>
+                                <th>Price</th>
+                                <th>Category</th>
+                            </tr>
                             </thead>
                             <tbody>{rows}</tbody>
                         </table>
@@ -488,7 +518,7 @@
     });
 
     var SearchBox = React.createClass({
-        handleChange: function() {
+        handleChange: function () {
             this.props.onUserInput(
                     this.refs.filterKeywordTextInput.value,
                     'all',
@@ -506,18 +536,17 @@
          console.log(filter.active);
          //filtersActive.removeItem(key);
          },*/
-        render: function(){
+        render: function () {
             //var _this = this; //view-source:https://gmu-swe432.github.io/lecture10demos/public/06bonusreact/
             var filtersActive = [];
             var filtersCurrent = [{name: 'Keyword', value: this.props.filterKeywordText, active: true},
                 {name: 'Category', value: this.props.filterCategory, active: true},
                 {name: 'Class', value: this.props.filterClassText, active: true},
                 {name: 'Professor', value: this.props.filterProfessorText, active: true},
-                {name: 'Max Price', value: '$'+this.props.filterPriceMax, active: true},
+                {name: 'Max Price', value: '$' + this.props.filterPriceMax, active: true},
                 {name: 'Date', value: this.props.filterDate, active: true}];
-            filtersCurrent.forEach( function(filter) {
-                if( filter.name == 'Max Price'|| filter.name == 'Category' || (filter.active == true && filter.value!= null && filter.value.length > 0))
-                {
+            filtersCurrent.forEach(function (filter) {
+                if (filter.name == 'Max Price' || filter.name == 'Category' || (filter.active == true && filter.value != null && filter.value.length > 0)) {
                     filtersActive.push(
                             <ActiveFilters key={filter.name}
                                            name={filter.name}
@@ -528,52 +557,59 @@
                 }
             });
             return (
-                    <div className = "search" data-list-size="4">
-                        <table className = "searchBoxTable">
+                    <div className="search" data-list-size="4">
+                        <table className="searchBoxTable">
                             <tbody>
                             <tr>
                                 <td><input
-                                        className = "input"
-                                        type = "text"
-                                        placeholder = "Search by keyword"
+                                        className="input"
+                                        type="text"
+                                        placeholder="Search by keyword"
                                         value={this.props.filterKeywordText}
                                         ref="filterKeywordTextInput"
                                         onChange={this.handleChange}
-                                        id = "searchBox"
+                                        id="searchBox"
                                 /></td>
                             </tr>
                             </tbody>
                         </table>
-                        <div id = "searchFilters">
-                            <table className = "searchBoxTable">
+                        <div id="searchFilters">
+                            <table className="searchBoxTable">
                                 <thead>
-                                <tr><td>Category</td><td>Class</td><td>Professor</td><td>Maximum Price</td><td>Posted Date</td></tr>
+                                <tr>
+                                    <td>Category</td>
+                                    <td>Class</td>
+                                    <td>Professor</td>
+                                    <td>Maximum Price</td>
+                                    <td>Posted Date</td>
+                                </tr>
                                 </thead>
-                                <tbody><tr>
+                                <tbody>
+                                <tr>
                                     <td><select name="searchTermSelection">
-                                        <option name = "category" value="All">All</option>
-                                        <option name = "category" value="Textbook">Textbook</option>
-                                        <option name = "category" value="Class Notes">Class Notes</option>
-                                        <option name = "category" value="Class Materials">Class Materials</option>
-                                        <option name = "category" value="Miscellaneous">Miscellaneous</option>
+                                        <option name="category" value="All">All</option>
+                                        <option name="category" value="Textbook">Textbook</option>
+                                        <option name="category" value="Class Notes">Class Notes</option>
+                                        <option name="category" value="Class Materials">Class Materials</option>
+                                        <option name="category" value="Miscellaneous">Miscellaneous</option>
                                     </select></td>
                                     <td><input
-                                            className = "input"
-                                            type = "text"
-                                            placeholder = "Search term"
+                                            className="input"
+                                            type="text"
+                                            placeholder="Search term"
                                             value={this.props.filterClassText}
                                             ref="filterClassTextInput"
                                             onChange={this.handleChange}
-                                            id = "classSearchTermInput"
+                                            id="classSearchTermInput"
                                     /></td>
                                     <td><input
-                                            className = "input"
-                                            type = "text"
-                                            placeholder = "Search term"
+                                            className="input"
+                                            type="text"
+                                            placeholder="Search term"
                                             value={this.props.filterProfessorText}
                                             ref="filterProfessorTextInput"
                                             onChange={this.handleChange}
-                                            id = "professorSearchTermInput"
+                                            id="professorSearchTermInput"
                                     /></td>
                                     <td><input
                                             type="range"
@@ -583,15 +619,17 @@
                                             value={this.props.filterPriceMax}
                                             ref="filterPriceMaxInput"
                                             onChange={this.handleChange}
-                                    /><div id = "maxPriceDisplay">${this.props.filterPriceMax}</div></td>
+                                    />
+                                        <div id="maxPriceDisplay">${this.props.filterPriceMax}</div>
+                                    </td>
                                     <td><input
-                                            className = "input"
-                                            type = "text"
-                                            placeholder = "Search term"
+                                            className="input"
+                                            type="text"
+                                            placeholder="Search term"
                                             value={this.props.filterDate}
                                             ref="filterDateInput"
                                             onChange={this.handleChange}
-                                            id = "dateSearchTermInput"/></td>
+                                            id="dateSearchTermInput"/></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -609,7 +647,7 @@
     });
 
     var FilterableSearchPage = React.createClass({
-        getInitialState: function() {
+        getInitialState: function () {
             return {
                 filterKeywordText: '',
                 filterCategory: 'All',
@@ -619,7 +657,7 @@
                 filterDate: ''
             }
         },
-        handleUserInput: function(filterKeywordText,filterCategory,filterClassText,filterProfessorText,filterPriceMax,filterDate) {
+        handleUserInput: function (filterKeywordText, filterCategory, filterClassText, filterProfessorText, filterPriceMax, filterDate) {
             this.setState({
                 filterKeywordText: filterKeywordText,
                 filterCategory: filterCategory,
@@ -629,7 +667,7 @@
                 filterDate: filterDate
             });
         },
-        render: function() {
+        render: function () {
             //console.log(this.props.items);
             return (
                     <div>
@@ -661,16 +699,27 @@
 
     var HomePage = React.createClass({
         render: function () {
-            return(
-                    <div className = "bottomcolumns">
-                        <h1 className = "features">Features</h1>
-                        <table><tbody>
-                        <tr>
-                            <td><h3>Feature 1</h3>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</td>
-                            <td><h3>Feature 2</h3>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</td>
-                            <td><h3>Feature 3</h3>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</td>
-                        </tr>
-                        </tbody></table>
+            return (
+                    <div className="bottomcolumns">
+                        <h1 className="features">Features</h1>
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td><h3>Feature 1</h3>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                </td>
+                                <td><h3>Feature 2</h3>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                </td>
+                                <td><h3>Feature 3</h3>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                         <div id='dashboard'></div>
                     </div>
             );
@@ -680,42 +729,42 @@
     //REUSED ITEMS
     //last li element to be defined as username after successful login
     var Menu = React.createClass({
-        updateHomeView: function(){
+        updateHomeView: function () {
             this.props.updateHomeView(
                     "Home"
             );
         },
-        updateSearchView: function (){
+        updateSearchView: function () {
             this.props.updateSearchView(
                     "Search"
             );
         },
-        updatePostView: function (){
+        updatePostView: function () {
             this.props.updatePostView(
                     "Post New Item"
             );
         },
-        updateLogInView: function (){
+        updateLogInView: function () {
             this.props.updateLogInView(
                     "Log In"
             );
         },
-        updateSignUpView: function (){
+        updateSignUpView: function () {
             this.props.updateSignUpView(
                     "Sign Up"
             );
         },
-        render: function() {
-            return(
-                    <nav className = "menu">
+        render: function () {
+            return (
+                    <nav className="menu">
                         <ul>
-                            <li className = "left" id = "homeLink" onClick={this.updateHomeView}>Home</li>
-                            <li className = "left" id = "searchLink" onClick={this.updateSearchView}>Search</li>
-                            <li className = "left" id = "postLink" onClick={this.updatePostView}>Post Item</li>
-                            <li className = "rightMenuLinks" id = "logInLink" onClick={this.updateLogInView}>Log In</li>
-                            <li className = "rightMenuLinks" id = "signUpLink" onClick={this.updateSignUpView}>Sign Up</li>
-                            <li id = "logOut">Log Out</li>
-                            <li><span id = "userName"></span></li>
+                            <li className="left" id="homeLink" onClick={this.updateHomeView}>Home</li>
+                            <li className="left" id="searchLink" onClick={this.updateSearchView}>Search</li>
+                            <li className="left" id="postLink" onClick={this.updatePostView}>Post Item</li>
+                            <li className="rightMenuLinks" id="logInLink" onClick={this.updateLogInView}>Log In</li>
+                            <li className="rightMenuLinks" id="signUpLink" onClick={this.updateSignUpView}>Sign Up</li>
+                            <li id="logOut">Log Out</li>
+                            <li><span id="userName"></span></li>
                         </ul>
                     </nav>
             );
@@ -723,9 +772,9 @@
     });
 
     var Footer = React.createClass({
-        render: function() {
-            return(
-                    <footer className = "footer">
+        render: function () {
+            return (
+                    <footer className="footer">
                         <h3>SWE 432</h3>
                         <p>Dayana Hudson</p>
                         <p>Ermal Dedej</p>
@@ -736,33 +785,41 @@
     });
 
     var SectionHeading = React.createClass({
-        render: function() {
-            return(
-                    <div className = "sectionHeading">
-                        <h1 className = "title">GMUExchange</h1>
-                        <h2 className = "subtitle"  id = "subtitle">{this.props.subtitle}</h2>
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/ea/An_aerial_view_of_the_Johnson_Center_at_dawn..jpg" />
+        render: function () {
+            return (
+                    <div className="sectionHeading">
+                        <h1 className="title">GMUExchange</h1>
+                        <h2 className="subtitle" id="subtitle">{this.props.subtitle}</h2>
+                        <img
+                                src="https://upload.wikimedia.org/wikipedia/commons/e/ea/An_aerial_view_of_the_Johnson_Center_at_dawn..jpg"/>
                     </div>
             );
         }
     });
 
     var MainHeading = React.createClass({
-        render: function() {
-            return(
-                    <div className = "mainHeading">
-                        <h1 className = "title">GMUExchange</h1>
-                        <h2 className = "subtitle">Tagline</h2>
-                        <table className = "quickLogin"><tbody>
-                        <tr>
-                            <th><input className = "input" type = "email" placeholder = "GMU e-mail" id = "quickLoginEmail"/></th>
-                            <th><input className = "input" type = "password" placeholder = "Password" id = "quickLoginPassword"/></th>
-                        </tr>
-                        <tr>
-                            <td colSpan = "2"><button className = "button" id = "quickLoginButton">Log In</button></td>
-                        </tr>
-                        </tbody></table>
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/ea/An_aerial_view_of_the_Johnson_Center_at_dawn..jpg" />
+        render: function () {
+            return (
+                    <div className="mainHeading">
+                        <h1 className="title">GMUExchange</h1>
+                        <h2 className="subtitle">Tagline</h2>
+                        <table className="quickLogin">
+                            <tbody>
+                            <tr>
+                                <th><input className="input" type="email" placeholder="GMU e-mail" id="quickLoginEmail"/>
+                                </th>
+                                <th><input className="input" type="password" placeholder="Password"
+                                           id="quickLoginPassword"/></th>
+                            </tr>
+                            <tr>
+                                <td colSpan="2">
+                                    <button className="button" id="quickLoginButton">Log In</button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <img
+                                src="https://upload.wikimedia.org/wikipedia/commons/e/ea/An_aerial_view_of_the_Johnson_Center_at_dawn..jpg"/>
                     </div>
             );
         }
@@ -770,83 +827,198 @@
 
     //APP COMPONENT
     var AppComponent = React.createClass({
-        getInitialState: function(){
+        getInitialState: function () {
             return {
                 view: 'Home'
             }
         },
-        updateCurrentView: function(view){
+        updateCurrentView: function (view) {
             this.setState({
                 view: view
             });
         },
-        render: function(){
-            if(this.state.view == 'Home'){
-                return(<div><Menu
+        render: function () {
+            if (this.state.view == 'Home') {
+                return (<div><Menu
                         updateHomeView={this.updateCurrentView}
                         updateSearchView={this.updateCurrentView}
                         updatePostView={this.updateCurrentView}
                         updateSignUpView={this.updateCurrentView}
                         updateLogInView={this.updateCurrentView}
-                /><MainHeading /><HomePage items = {ITEMS} /><Footer /></div>);
+                /><MainHeading /><HomePage items={ITEMS}/><Footer /></div>);
             }
-            else if(this.state.view == 'Search'){
-                return(<div><Menu
+            else if (this.state.view == 'Search') {
+                return (<div><Menu
                         updateHomeView={this.updateCurrentView}
                         updateSearchView={this.updateCurrentView}
                         updatePostView={this.updateCurrentView}
                         updateSignUpView={this.updateCurrentView}
                         updateLogInView={this.updateCurrentView}
-                /><SectionHeading subtitle={this.state.view}/><FilterableSearchPage items = {ITEMS} /><Footer /></div>);
+                /><SectionHeading subtitle={this.state.view}/><FilterableSearchPage items={ITEMS}/><Footer /></div>);
             }
-            else if(this.state.view == 'Post New Item'){
-                return(<div><Menu
+            else if (this.state.view == 'Post New Item') {
+                return (<div><Menu
                         updateHomeView={this.updateCurrentView}
                         updateSearchView={this.updateCurrentView}
                         updatePostView={this.updateCurrentView}
                         updateSignUpView={this.updateCurrentView}
                         updateLogInView={this.updateCurrentView}
-                /><SectionHeading subtitle={this.state.view}/><PostAProductPage items = {ITEMS} /><Footer /></div>);
+                /><SectionHeading subtitle={this.state.view}/><PostAProductPage items={ITEMS}/><Footer /></div>);
             }
-            else if(this.state.view == 'Sign Up'){
-                return(<div><Menu
+            else if (this.state.view == 'Sign Up') {
+                return (<div><Menu
                         updateHomeView={this.updateCurrentView}
                         updateSearchView={this.updateCurrentView}
                         updatePostView={this.updateCurrentView}
                         updateSignUpView={this.updateCurrentView}
                         updateLogInView={this.updateCurrentView}
-                /><SectionHeading subtitle={this.state.view}/><SignUpPage items = {ITEMS} /><Footer /></div>);
+                /><SectionHeading subtitle={this.state.view}/><SignUpPage items={ITEMS}/><Footer /></div>);
             }
-            else if(this.state.view == 'Log In'){
-                return(<div><Menu
+            else if (this.state.view == 'Log In') {
+                return (<div><Menu
                         updateHomeView={this.updateCurrentView}
                         updateSearchView={this.updateCurrentView}
                         updatePostView={this.updateCurrentView}
                         updateSignUpView={this.updateCurrentView}
                         updateLogInView={this.updateCurrentView}
-                /><SectionHeading subtitle={this.state.view}/><LogInPage items = {ITEMS} /><Footer /></div>);
+                /><SectionHeading subtitle={this.state.view}/><LogInPage items={ITEMS}/><Footer /></div>);
             }
         }
     });
 
     //DUMMY DATA
-    var ITEMS = [{id: "1", image: "IMAGE1.jpg", isbn: "978-1305257795", description: "Research Methods and Statistics - 5th edition", price: "144.48", category: "Textbook", className: "GEN 301", professor: "Johnson", date: "01/02/2016"},
-        {id: "2", image: "IMAGE2.jpg", isbn: "978-1118345009", description: "Principles of Anatomy and Physiology -Text Only - 14th edition", price: "150.96", category: "Textbook", className: "PHYS 240", professor: "Smith", date: "05/02/2016"},
-        {id: "3", image: "IMAGE3.jpg", isbn: "978-1305632134", description: "Power System Analysis and Design - 6th edition", price: "148.49", category: "Textbook", className: "GEN 301", professor: "Marks", date: "07/02/2016"},
-        {id: "4", image: "IMAGE4.jpg", isbn: "978-0134201665", description: "Anatomy and Physiology - With Mastering A and P - 6th edition", price: "249.90", category: "Textbook", className: "PHYS 100", professor: "Walker", date: "08/02/2016"},
-        {id: "5", image: "IMAGE5.jpg", isbn: null, description: "Class notes for GEN 202", price: "10.00", category: "Class Notes", className: "GEN 301", professor: "Johnson", date: "01/02/2016"},
-        {id: "6", image: "IMAGE6.jpg", isbn: null, description: "Class materials for ECE 301", price: "25.00", category: "Class Materials", className: "ECE 301", professor: "Johnson", date: "01/02/2016"},
-        {id: "7", image: "IMAGE7.jpg", isbn: null, description: "Desk and chair", price: "40.00", category: "Miscellaneous", className: null, professor: null, date: "05/02/2016"},];
+    var ITEMS = [{
+        id: "1",
+        image: "IMAGE1.jpg",
+        isbn: "978-1305257795",
+        description: "Research Methods and Statistics - 5th edition",
+        price: "144.48",
+        category: "Textbook",
+        className: "GEN 301",
+        professor: "Johnson",
+        date: "01/02/2016"
+    },
+        {
+            id: "2",
+            image: "IMAGE2.jpg",
+            isbn: "978-1118345009",
+            description: "Principles of Anatomy and Physiology -Text Only - 14th edition",
+            price: "150.96",
+            category: "Textbook",
+            className: "PHYS 240",
+            professor: "Smith",
+            date: "05/02/2016"
+        },
+        {
+            id: "3",
+            image: "IMAGE3.jpg",
+            isbn: "978-1305632134",
+            description: "Power System Analysis and Design - 6th edition",
+            price: "148.49",
+            category: "Textbook",
+            className: "GEN 301",
+            professor: "Marks",
+            date: "07/02/2016"
+        },
+        {
+            id: "4",
+            image: "IMAGE4.jpg",
+            isbn: "978-0134201665",
+            description: "Anatomy and Physiology - With Mastering A and P - 6th edition",
+            price: "249.90",
+            category: "Textbook",
+            className: "PHYS 100",
+            professor: "Walker",
+            date: "08/02/2016"
+        },
+        {
+            id: "5",
+            image: "IMAGE5.jpg",
+            isbn: null,
+            description: "Class notes for GEN 202",
+            price: "10.00",
+            category: "Class Notes",
+            className: "GEN 301",
+            professor: "Johnson",
+            date: "01/02/2016"
+        },
+        {
+            id: "6",
+            image: "IMAGE6.jpg",
+            isbn: null,
+            description: "Class materials for ECE 301",
+            price: "25.00",
+            category: "Class Materials",
+            className: "ECE 301",
+            professor: "Johnson",
+            date: "01/02/2016"
+        },
+        {
+            id: "7",
+            image: "IMAGE7.jpg",
+            isbn: null,
+            description: "Desk and chair",
+            price: "40.00",
+            category: "Miscellaneous",
+            className: null,
+            professor: null,
+            date: "05/02/2016"
+        },];
 
     //RENDER THE WHOLE PAGE
     ReactDOM.render(
             <AppComponent />,
             document.getElementById('mountNode')
     );
+
+    describe("MainHeading", function(){
+        var TestUtils = React.addons.TestUtils;
+        var mainHeadingComponent, element, renderedDOM;
+        beforeEach(function(done){
+            element = React.createElement(MainHeading);
+            mainHeadingComponent = TestUtils.renderIntoDocument(element);
+            mainHeadingComponent.setState({items: [{text: "testItem"}]}, done);
+        });
+        it("Has a Log In button", function(){
+            let button = TestUtils.scryRenderedDOMComponentsWithTag(mainHeadingComponent,"button");
+            expect(button[0]).not.toBeUndefined();
+            expect(button[0].innerHTML).toBe("Log In");
+        });
+    });
+
+    describe("Menu", function(){
+        var TestUtils = React.addons.TestUtils;
+        var menuComponent, element, renderedDOM;
+        beforeEach(function(done){
+            element = React.createElement(Menu);
+            menuComponent = TestUtils.renderIntoDocument(element);
+            menuComponent.setState({items: [{text: "testItem"}]}, done);
+        });
+        it("Has a Home menu link", function(){
+            let navigationMenu = TestUtils.scryRenderedDOMComponentsWithTag(menuComponent,"li");
+            expect(navigationMenu[0].innerHTML).toBe("Home");
+        });
+        it("Has a Search menu link", function(){
+            let navigationMenu = TestUtils.scryRenderedDOMComponentsWithTag(menuComponent,"li");
+            expect(navigationMenu[1].innerHTML).toBe("Search");
+        });
+        it("Has a Post Item link", function(){
+            let navigationMenu = TestUtils.scryRenderedDOMComponentsWithTag(menuComponent,"li");
+            expect(navigationMenu[2].innerHTML).toBe("Post Item");
+        });
+        it("Has a Sign Up link", function(){
+            let navigationMenu = TestUtils.scryRenderedDOMComponentsWithTag(menuComponent,"li");
+            expect(navigationMenu[4].innerHTML).toBe("Sign Up");
+        });
+        it("Has a Log In link", function(){
+            let navigationMenu = TestUtils.scryRenderedDOMComponentsWithTag(menuComponent,"li");
+            expect(navigationMenu[3].innerHTML).toBe("Log In");
+        });
+    });
 </script>
 <div id="mountNode">
     <!--Contains the rest of the website-->
+    sdf
 </div>
-
 </body>
 </html>
