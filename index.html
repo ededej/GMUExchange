@@ -1014,7 +1014,117 @@
             let navigationMenu = TestUtils.scryRenderedDOMComponentsWithTag(menuComponent,"li");
             expect(navigationMenu[3].innerHTML).toBe("Log In");
         });
+
     });
+    describe('Sign Up', function () {
+        var TestUtils = React.addons.TestUtils;
+        var gmuComponentSignUp, element, renderedDOM;
+        beforeEach(function () {
+            element = React.createElement(SignUpPage);
+            gmuComponentSignUp = TestUtils.renderIntoDocument(element);
+        });
+
+        it("Checking form for email field", function () {
+            let form = TestUtils.scryRenderedDOMComponentsWithTag(gmuComponentSignUp, "td");
+            expect(form[0].innerHTML).toBe("Email:");
+
+        });
+        it("Checking form for password field", function () {
+            let form = TestUtils.scryRenderedDOMComponentsWithTag(gmuComponentSignUp, "td");
+            expect(form[2].innerHTML).toBe("Password:");
+        });
+        it("Checking form for confirm password field", function () {
+            let form = TestUtils.scryRenderedDOMComponentsWithTag(gmuComponentSignUp, "td");
+            expect(form[4].innerHTML).toBe("Confirm Password:");
+        });
+        it("Checking form for FirstName field", function () {
+            let form = TestUtils.scryRenderedDOMComponentsWithTag(gmuComponentSignUp, "td");
+            expect(form[7].innerHTML).toBe("First name:");
+        });
+        it("Checking form for LastName field", function () {
+            let form = TestUtils.scryRenderedDOMComponentsWithTag(gmuComponentSignUp, "td");
+            expect(form[9].innerHTML).toBe("Last name:");
+        });
+        it("Checking for Sing Up Button ", function(){
+            let button = TestUtils.scryRenderedDOMComponentsWithTag(gmuComponentSignUp,"button");
+            expect(button[0]).not.toBeUndefined();
+            expect(button[0].innerHTML).toBe("Sign Up");
+        });
+//        describe("New Sing Up", function () {
+//            beforeEach(function () {
+//                spyOn(gmuComponentSignUp.fireRef, "set");
+//            });
+////            it("Causes fireBase set to be called", function () {
+////                let button = TestUtils.scryRenderedDOMComponentsWithTag(gmuComponentSignUp, "button");
+////                TestUtils.Simulate.click(button[0]);
+////                expect(gmuComponentSignUp.fireRef.set).toHaveBeenCalledWith({"FirstName": "",
+////                    "LastName":"",
+////                    "Email":"",
+////                    "Password": ""});
+////            });
+//            it("Updates firebase when text is changed", function(){
+////                var setSpy;
+////                setSpy = jasmine.createSpy("set");
+////                spyOn(gmuComponentSignUp.fireRef, "child").and.returnValue({set : setSpy});
+//                var inputs = TestUtils.scryRenderedDOMComponentsWithTag(gmuComponentSignUp,"input");
+//                inputs[0].value = "Email";
+//                inputs[1].value = "Pass";
+//                inputs[2].value = "RePass";
+//                inputs[3].value = "Name";
+//                inputs[4].value = "Last";
+//                TestUtils.Simulate.change(inputs[0]);
+//                expect(inputs[0].innerHTML).toBe("Email");
+////                expect(gmuComponentSignUp.fireRef.child).toHaveBeenCalled();
+////                expect(setSpy).toHaveBeenCalledWith({text: "Email"});
+//            });
+        });
+
+        describe('ProductRegistration', function () {
+            var TestUtils = React.addons.TestUtils;
+            var gmuComponentProdReg, element, renderedDOM;
+            beforeEach(function () {
+                element = React.createElement(ProductRegistration);
+                gmuComponentProdReg = TestUtils.renderIntoDocument(element);
+            });
+
+            it("Checking form for Category field", function () {
+                let form = TestUtils.scryRenderedDOMComponentsWithTag(gmuComponentProdReg, "td");
+                expect(form[0].innerHTML).toBe("Category:");
+
+            });
+            it("Checking form for ISBN field", function () {
+                let form = TestUtils.scryRenderedDOMComponentsWithTag(gmuComponentProdReg, "td");
+                expect(form[2].innerHTML).toBe("ISBN:");
+            });
+            it("Checking form for Item Description field", function () {
+                let form = TestUtils.scryRenderedDOMComponentsWithTag(gmuComponentProdReg, "td");
+                expect(form[4].innerHTML).toBe("Item Description:");
+            });
+            it("Checking form for Class field", function () {
+                let form = TestUtils.scryRenderedDOMComponentsWithTag(gmuComponentProdReg, "td");
+                expect(form[6].innerHTML).toBe("Class:");
+            });
+            it("Checking form for Price field", function () {
+                let form = TestUtils.scryRenderedDOMComponentsWithTag(gmuComponentProdReg, "td");
+                expect(form[8].innerHTML).toBe("Price:");
+            });
+            it("Checking form for Professor field", function () {
+                let form = TestUtils.scryRenderedDOMComponentsWithTag(gmuComponentProdReg, "td");
+                expect(form[10].innerHTML).toBe("Professor:");
+            });
+            it("Checking form for Image field", function () {
+                let form = TestUtils.scryRenderedDOMComponentsWithTag(gmuComponentProdReg, "td");
+                expect(form[12].innerHTML).toBe("Image:");
+            });
+            it("Checking for Submit Button ", function(){
+                let button = TestUtils.scryRenderedDOMComponentsWithTag(gmuComponentProdReg,"button");
+                expect(button[0]).not.toBeUndefined();
+                expect(button[0].innerHTML).toBe("Submit");
+            });
+
+
+    });
+
 </script>
 <div id="mountNode">
     <!--Contains the rest of the website-->
@@ -1022,3 +1132,9 @@
 </div>
 </body>
 </html>
+
+
+<!--{"FirstName": "",-->
+<!--"LastName":"",-->
+<!--"Email":"",-->
+<!--"Password": ""}-->
