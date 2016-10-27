@@ -23,3 +23,6 @@ The four scenarios we decided on were as follows:
 
 *HW5 scenarios: search, post a product, registration, home visualization (D3JS).
 https://dayanahudson.github.io/GMUExchange/
+
+Heroku:
+https://sheltered-journey-42475.herokuapp.com/
