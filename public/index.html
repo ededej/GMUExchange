@@ -210,20 +210,9 @@
             this.firePostProduct = firebase.database().ref('products');
         },
         handleAdd: function (e) {
-            //            var date = new Date().toDateString(); // getting the date when the user post the items
             // setting up the firebase with all the necessary fields
             var date = new Date().toJSON().slice(0, 10);
-//            e.preventDefault();
-//            var formData = new FormData($(this.refs.imageUploadInput.value)[0]);
-//            console.log(formData);
-//            $.ajax({
-//                type: "POST",
-//                url: "/upload",
-//                data: formData,processData: false,
-//                contentType: false
-//
-//            });
-            $.post("http://localhost:4000/postItem",{
+            $.post("https://sheltered-journey-42475.herokuapp.com/postItem",{
                 category: this.refs.select.value,
                 className: this.refs.classTextInput.value,
                 description: this.refs.descriptionTextInput.value,
@@ -237,18 +226,26 @@
 
         },
         handleUploadImg:function (e) {
-            e.preventDefault();
-            var formData = new FormData($(this.refs.imageUploadInput.value));
+//            e.preventDefault();
+            console.log(  $("#postForm")[0]);
+            var formData = new FormData($("#postForm")[0]);
+
             console.log(formData);
+//            var file = e.target.files[0];
+//           console.log(file);
+//
+//            var formData = new FormData();
+//            formData.append('file',  file);
             $.ajax({
                 type: "POST",
-                url: "http://localhost:4000/upload",
-                data: formData,processData: false,
+                url: "https://sheltered-journey-42475.herokuapp.com/upload",
+                data: formData,
+                processData: false,
                 contentType: false
 
             });
-
         },
+
         render: function () {
             /*console.log('cat: ' + this.props.categorySelection + 'desc: '+ this.props.descriptionText +
              ' class: ' + this.props.classText + ' professor:' + this.props.professorText +
@@ -256,7 +253,7 @@
              ' image: ' + this.props.imageUpload);*/
             return (
                     <div>
-                        <form className="creds">
+                        <form id="postForm" action="https://sheltered-journey-42475.herokuapp.com/upload" method="post" enctype="multipart/form-data" className="creds">
                             <table className="formTable">
                                 <tbody>
                                 <tr>
@@ -328,14 +325,19 @@
                                 </tr>
                                 <tr>
                                     <td>Image:</td>
-                                    <td><input
+                                    <td>
+                                        <input
                                             className="input"
                                             type="file"
+                                            name="img"
                                             value={this.props.imageUpload}
                                             ref="imageUploadInput"
                                             onChange={this.handleUploadImg}
                                             id="productSubmissionFile"
-                                    /></td>
+                                    />
+                                        <input type="button" ref="button" value="Upload" />
+
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
