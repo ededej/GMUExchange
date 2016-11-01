@@ -3,31 +3,36 @@
 <head>
     <title></title><!--title to be updated by each view-->
 
-    <link href="stylesheet.css" rel="stylesheet">
-    <link href="search.css" rel="stylesheet">
-    <link href="compatibility.css" rel="stylesheet">
-    <link href="dashBoard.css" rel="stylesheet">
-    <!--<script type = "text/javascript" src = "myjavascript.js"></script>-->
 
-    <script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
     <!--React without addons: <script src="https://fb.me/react-15.0.0.js"></script>-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.2/react-with-addons.js"></script>
     <script src="https://fb.me/react-dom-15.0.0.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/3.4.0/firebase.js"></script>
+    <!-- Firebase Auth -->
+    <script src="https://www.gstatic.com/firebasejs/ui/live/0.5/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/live/0.5/firebase-ui-auth.css" />
     <!-- ReactFire -->
     <script src="https://cdn.firebase.com/libs/reactfire/1.0.0/reactfire.min.js"></script>
+    <!--<script type = "text/javascript" src = "myjavascript.js"></script>-->
+
+    <script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <!--D3JS-->
     <script src="https://d3js.org/d3.v3.min.js"></script>
     <script src="dashBoard.js"></script>
+    <link href="stylesheet.css" rel="stylesheet">
+    <link href="search.css" rel="stylesheet">
+    <link href="compatibility.css" rel="stylesheet">
+    <link href="dashBoard.css" rel="stylesheet">
 </head>
 <body class = "body">
+<div id="mountNode">
+    <!--Contains the rest of the website-->
+
+</div>
 <script type="text/babel">
-    //$(document).ready(function() {
-    //"use strict";
-    //var React = require('react');
-    //var ReactDOM = require('react-DOM');
 
     //FIREBASE *********************************************************************************************************
     "use strict";
@@ -40,31 +45,101 @@
     };
     firebase.initializeApp(config);
 
+    var userName;
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            console.log("Signed in");
+
+            $("#firebaseui-auth-container").hide();
+            // User is signed in.
+            var displayName = user.displayName;
+            var email = user.email;
+            var emailVerified = user.emailVerified;
+            var photoURL = user.photoURL;
+            var uid = user.uid;
+            userName = user.uid;
+            ReactDOM.render(<AppComponent/>, document.getElementById('mountNode'));
+//            ReactDOM.render(
+//                    <AppComponent />,
+//                    document.getElementById('mountNode')
+//            );
+            var providerData = user.providerData;
+            user.getToken().then(function(accessToken) {
+                document.getElementById('sign-in-status').textContent = "Welcome, " + displayName;
+                document.getElementById('account-details').textContent = JSON.stringify({
+                    displayName: displayName,
+                    email: email,
+                    emailVerified: emailVerified,
+                    photoURL: photoURL,
+                    uid: uid,
+                    accessToken: accessToken,
+                    providerData: providerData
+                }, null, '  ');
+            });
+        } else {
+            console.log("Signed out");
+            // User is signed out.
+            $("#header").hide();
+
+//            $("#container").hide();
+//            $("#firebaseui-auth-container").hide();
+
+            // FirebaseUI config.
+            console.log("Config ");
+
+            var uiConfig = {
+                'signInSuccessUrl': '/', //URL that we get sent BACK to after logging in
+                'signInOptions': [
+                    // Leave the lines as is for the providers you want to offer your users.
+                    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+//                    firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+//                    firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+//                    firebase.auth.GithubAuthProvider.PROVIDER_ID,
+//                    firebase.auth.EmailAuthProvider.PROVIDER_ID
+                ],
+            // Terms of service url.
+                'tosUrl': '<your-tos-url>',
+            };
+            console.log("Out Config ");
+
+            // Initialize the FirebaseUI Widget using Firebase.
+            var ui = new firebaseui.auth.AuthUI(firebase.auth());
+            // The start method will wait until the DOM is loaded.
+            ui.start('#firebaseui-auth-container', uiConfig);
+            $("#container").hide();
+        }
+    }, function(error) {
+        console.log(error);
+    });
+
     //LOG IN PAGE **********************************************************************************************
 
     var LogInPage = React.createClass({
         render: function () {
-            return (
-                    <form className="creds">
-                        <table className="formTable">
-                            <tbody>
-                            <tr>
-                                <td>Email:</td>
-                                <td>
-                                    <input className="input" type="text" id="email" placeholder="GMU e-mail"
-                                           pattern="[a-z0-9]*@(masonlive\\.)?gmu\\.edu"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Password:</td>
-                                <td>
-                                    <input className="input" type="password" id="password" placeholder="Password"/>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <button className="tableButton button" id="signUpButton">Log In</button>
+            return (<form className="creds">
+                <table className="formTable">
+                    <tbody>
+                    <tr>
+                        <td>Email:</td>
+                        <td>
+                            <input className="input" type="text" id="email" placeholder="GMU e-mail"
+                                   pattern="[a-z0-9]*@(masonlive\\.)?gmu\\.edu"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Password:</td>
+                        <td>
+                            <input className="input" type="password" id="password" placeholder="Password"/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <button className="tableButton button" id="signUpButton">Log In</button>
+                        <div id="firebaseui-auth-container" />
+
+
                     </form>
+
             );
         }
     });
@@ -185,6 +260,8 @@
             );
         }
     });
+
+
     //POST A PRODUCT PAGE **********************************************************************************************
     var ProductRegistration = React.createClass({
         //http://stackoverflow.com/questions/29108779/how-to-get-selected-value-of-a-dropdown-menu-in-reactjs
@@ -696,6 +773,7 @@
         render: function () {
             return (
                     <div className="bottomcolumns">
+
                         <h1 className="features">Features</h1>
                         <table>
                             <tbody>
@@ -752,16 +830,30 @@
         render: function () {
             return (
                     <nav className="menu">
+
                         <ul>
+
                             <li className="left" id="homeLink" onClick={this.updateHomeView}>Home</li>
                             <li className="left" id="searchLink" onClick={this.updateSearchView}>Search</li>
                             <li className="left" id="postLink" onClick={this.updatePostView}>Post Item</li>
-                            <li className="rightMenuLinks" id="logInLink" onClick={this.updateLogInView}>Log In</li>
+
+                            {/*<li className="rightMenuLinks" id="logInLink" onClick={this.updateLogInView}>Log In</li>*/}
+
+                            <li><div id="firebaseui-auth-container" /></li>
+
+                            <li className="rightMenuLinks"><div id="header">
+                                <span id="sign-in-status"></span> | <a href="javascript:firebase.auth().signOut()">Sign Out</a>
+                            </div>
+                            </li>
                             <li className="rightMenuLinks" id="signUpLink" onClick={this.updateSignUpView}>Sign Up</li>
-                            <li id="logOut">Log Out</li>
-                            <li><span id="userName"></span></li>
+
+
                         </ul>
+
+
                     </nav>
+
+
             );
         }
     });
@@ -774,6 +866,8 @@
                         <p>Dayana Hudson</p>
                         <p>Ermal Dedej</p>
                         <p><a href="https://github.com/dayanahudson/GMUExchange/">GitHub</a></p>
+                        Debug: <span id="account-details"></span>
+
                     </footer>
             );
         }
@@ -796,10 +890,11 @@
         render: function () {
             return (
                     <div className="mainHeading">
-                        <h1 className="title">GMU Exchange</h1>
+                        <h1 className="title">GMUExchange</h1>
                         <h2 className="subtitle">Tagline</h2>
                         <table className="quickLogin">
                             <tbody>
+
                             <tr>
                                 <th><input className="input" type="email" placeholder="GMU e-mail" id="quickLoginEmail"/>
                                 </th>
@@ -810,6 +905,7 @@
                                 <td colSpan="2">
                                     <button className="button" id="quickLoginButton">Log In</button>
                                 </td>
+
                             </tr>
                             </tbody>
                         </table>
@@ -968,10 +1064,7 @@
 
 
 </script>
-<div id="mountNode">
-    <!--Contains the rest of the website-->
 
-</div>
 </body>
 </html>
 
