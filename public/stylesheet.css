@@ -22,10 +22,9 @@ input[type="text"], input[type="password"], input[type="email"]{
     font-size: 17px;
     width: 80%;
 }
-/*DELETE WHEN DONE TESTING-------------------------------------------------------------
-.quickLogin table, th, td {
-    border: 1px solid black;
-}*/
+.features {
+    text-align: center;
+}
 
 .pageContent {
     padding: 15px;
