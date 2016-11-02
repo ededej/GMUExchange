@@ -43,6 +43,8 @@
     firebase.initializeApp(config);
 
     var userName;
+    // Initialize the FirebaseUI Widget using Firebase.
+    var ui = new firebaseui.auth.AuthUI(firebase.auth());
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
             console.log("Signed in");
@@ -89,8 +91,7 @@
     //LOG IN PAGE **********************************************************************************************
 
     var LogInPage = React.createClass({
-        componentDidMount: function()
-        {
+        componentDidMount: function() {
             this.state = 'sdf';
             console.log("We made the component!");
             $("#header").hide();
@@ -108,10 +109,6 @@
                 // Terms of service url.
                 'tosUrl': '<your-tos-url>',
             };
-            console.log("Out Config ");
-
-            // Initialize the FirebaseUI Widget using Firebase.
-            var ui = new firebaseui.auth.AuthUI(firebase.auth());
             // The start method will wait until the DOM is loaded.
             ui.start('#firebaseui-auth-container', uiConfig);
             $("#sign-in-status").show();
@@ -823,28 +820,21 @@
         render: function () {
             return (
                     <nav className="menu">
-
                         <ul>
-
                             <li className="left" id="homeLink" onClick={this.updateHomeView}>Home</li>
                             <li className="left" id="searchLink" onClick={this.updateSearchView}>Search</li>
                             <li className="left" id="postLink" onClick={this.updatePostView}>Post Item</li>
 
                             <li className="rightMenuLinks" id="logInLink" onClick={this.updateLogInView}>Log In</li>
 
-                            <li className="rightMenuLinks"><div id="header">
-                                <span id="sign-in-status"></span> | <a href="javascript:firebase.auth().signOut()">Sign Out</a>
-                            </div>
+                            <li className="rightMenuLinks">
+                                <div id="header">
+                                    <span id="sign-in-status" /> | <a href="javascript:firebase.auth().signOut()">Sign Out</a>
+                                </div>
                             </li>
                             <li className="rightMenuLinks" id="signUpLink" onClick={this.updateSignUpView}>Sign Up</li>
-
-
                         </ul>
-
-
                     </nav>
-
-
             );
         }
     });
@@ -857,7 +847,7 @@
                         <p>Dayana Hudson</p>
                         <p>Ermal Dedej</p>
                         <p><a href="https://github.com/dayanahudson/GMUExchange/">GitHub</a></p>
-                        Debug: <span id="account-details"></span>
+                        Debug: <span id="account-details" />
 
                     </footer>
             );
