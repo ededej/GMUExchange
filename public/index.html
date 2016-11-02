@@ -51,6 +51,8 @@
             console.log("Signed in");
 
             $("#firebaseui-auth-container").hide();
+            $("#signUpLink").hide();
+            $("#logInLink").hide();
             // User is signed in.
             var displayName = user.displayName;
             var email = user.email;
@@ -78,9 +80,10 @@
         } else {
             console.log("Signed out");
             // User is signed out.
-
-
-
+            $("#header").hide();
+            $("#signUpLink").show();
+            $("#firebaseui-auth-container").show();
+            $("#logInLink").show();
         }
     }, function(error) {
         console.log(error);
@@ -619,7 +622,6 @@
             //var _this = this; //view-source:https://gmu-swe432.github.io/lecture10demos/public/06bonusreact/
             var filtersActive = [];
             var filtersCurrent = [{name: 'Keyword', value: this.props.filterKeywordText, active: true},
-                {name: 'Category', value: this.props.filterCategory, active: true},
                 {name: 'Class', value: this.props.filterClassText, active: true},
                 {name: 'Professor', value: this.props.filterProfessorText, active: true},
                 {name: 'Max Price', value: '$' + this.props.filterPriceMax, active: true},
@@ -656,7 +658,6 @@
                             <table className="searchBoxTable">
                                 <thead>
                                 <tr>
-                                    <td>Category</td>
                                     <td>Class</td>
                                     <td>Professor</td>
                                     <td>Maximum Price</td>
@@ -665,13 +666,6 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><select name="searchTermSelection">
-                                        <option name="category" value="All">All</option>
-                                        <option name="category" value="Textbook">Textbook</option>
-                                        <option name="category" value="Class Notes">Class Notes</option>
-                                        <option name="category" value="Class Materials">Class Materials</option>
-                                        <option name="category" value="Miscellaneous">Miscellaneous</option>
-                                    </select></td>
                                     <td><input
                                             className="input"
                                             type="text"
@@ -773,7 +767,7 @@
             );
         }
     });
-
+    
     //HOME PAGE ******************************************************************************************************
 
     var HomePage = React.createClass({
