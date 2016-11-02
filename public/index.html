@@ -3,8 +3,6 @@
 <head>
     <title></title><!--title to be updated by each view-->
 
-
-
     <!--React without addons: <script src="https://fb.me/react-15.0.0.js"></script>-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.2/react-with-addons.js"></script>
     <script src="https://fb.me/react-dom-15.0.0.js"></script>
@@ -30,7 +28,6 @@
 <body class = "body">
 <div id="mountNode">
     <!--Contains the rest of the website-->
-
 </div>
 <script type="text/babel">
 
@@ -121,33 +118,33 @@
         },
         render: function () {
             return (
-            <div>
-                <div id="firebaseui-auth-container">hi</div>
+                    <div>
+                        <div id="firebaseui-auth-container"></div>
 
-                <form className="creds">
-                <table className="formTable">
-                    <tbody>
-                    <tr>
-                        <td>Email:</td>
-                        <td>
-                            <input className="input" type="text" id="email" placeholder="GMU e-mail"
-                                   pattern="[a-z0-9]*@(masonlive\\.)?gmu\\.edu"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Password:</td>
-                        <td>
-                            <input className="input" type="password" id="password" placeholder="Password"/>
-                        </td>
-                    </tr>
+                        <form className="creds">
+                            <table className="formTable">
+                                <tbody>
+                                <tr>
+                                    <td>Email:</td>
+                                    <td>
+                                        <input className="input" type="text" id="email" placeholder="GMU e-mail"
+                                               pattern="[a-z0-9]*@(masonlive\\.)?gmu\\.edu"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Password:</td>
+                                    <td>
+                                        <input className="input" type="password" id="password" placeholder="Password"/>
+                                    </td>
+                                </tr>
 
-                    </tbody>
+                                </tbody>
 
-                </table>
-                <button className="tableButton button" id="signUpButton">Log In</button>
+                            </table>
+                            <button className="tableButton button" id="signUpButton">Log In</button>
 
-                    </form>
-            </div>
+                        </form>
+                    </div>
             );
         }
     });
@@ -203,11 +200,11 @@
         // adding the user account into firebase
         handleAdd: function (e) {
             $.post("https://sheltered-journey-42475.herokuapp.com/singUp",{
-                                FirstName: this.refs.fName.value,
-                                LastName: this.refs.lName.value,
-                                Email: this.refs.email.value,
-                                Password: this.refs.password.value
-                            });
+                FirstName: this.refs.fName.value,
+                LastName: this.refs.lName.value,
+                Email: this.refs.email.value,
+                Password: this.refs.password.value
+            });
         },
         //render function
         render: function () {
@@ -282,7 +279,7 @@
 
         handleChange: function () {
             this.props.onUserInput(
-                    this.setState({value: event.target.value}),//this.refs.categorySelection.value,
+                    this.setState({value: event.target.value}),
                     this.refs.descriptionTextInput.value,
                     this.refs.classTextInput.value,
                     this.refs.professorTextInput.value,
@@ -334,10 +331,6 @@
         },
 
         render: function () {
-            /*console.log('cat: ' + this.props.categorySelection + 'desc: '+ this.props.descriptionText +
-             ' class: ' + this.props.classText + ' professor:' + this.props.professorText +
-             ' price: ' +this.props.priceText + 'isbn: ' + this.props.isbnText +
-             ' image: ' + this.props.imageUpload);*/
             return (
                     <div>
                         <form id="postForm" action="https://sheltered-journey-42475.herokuapp.com/upload" method="post" enctype="multipart/form-data" className="creds">
@@ -414,14 +407,14 @@
                                     <td>Image:</td>
                                     <td>
                                         <input
-                                            className="input"
-                                            type="file"
-                                            name="img"
-                                            value={this.props.imageUpload}
-                                            ref="imageUploadInput"
-                                            onChange={this.handleUploadImg}
-                                            id="productSubmissionFile"
-                                    />
+                                                className="input"
+                                                type="file"
+                                                name="img"
+                                                value={this.props.imageUpload}
+                                                ref="imageUploadInput"
+                                                onChange={this.handleUploadImg}
+                                                id="productSubmissionFile"
+                                        />
                                         <input type="button" ref="button" value="Upload" />
 
                                     </td>
@@ -529,7 +522,6 @@
             var price = parseFloat(this.props.filterPriceMax);
             //var date = this.props.filterDate;
             this.props.items.forEach(function (item) {
-                //console.log('id: '+item.id);
                 var keywordRegex = new RegExp('');
                 var classNameRegex = new RegExp('');
                 var professorRegex = new RegExp('');
@@ -563,7 +555,6 @@
                 if (item.professor != null) {
                     professorMatch = professorRegex.exec(item.professor.toLowerCase());
                 }
-                //console.log(keywordMatch+classNameMatch+professorMatch);
                 if ((keywordMatch != null && keywordMatch.length > 0) &&
                         (price > parseFloat(item.price) &&
                                 ( (item.category == "Miscellaneous" && className == '' && professor == '') ||
@@ -767,7 +758,7 @@
             );
         }
     });
-    
+
     //HOME PAGE ******************************************************************************************************
 
     var HomePage = React.createClass({
@@ -1066,4 +1057,3 @@
 
 </body>
 </html>
-
