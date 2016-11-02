@@ -45,6 +45,7 @@
     var userName;
     // Initialize the FirebaseUI Widget using Firebase.
     var ui = new firebaseui.auth.AuthUI(firebase.auth());
+    var userC;
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
             console.log("Signed in");
@@ -53,6 +54,7 @@
             $("#signUpLink").hide();
             $("#logInLink").hide();
             // User is signed in.
+            userC=user;
             var displayName = user.displayName;
             var email = user.email;
             var emailVerified = user.emailVerified;
@@ -274,7 +276,9 @@
             };
         },
         mixins: [ReactFireMixin],
-
+        componentWillMount: function () {
+            this.fireRef = firebase.database().ref('users').child(userName);
+        },
         handleChange: function () {
             this.props.onUserInput(
                     this.setState({value: event.target.value}),
@@ -286,27 +290,37 @@
                     this.refs.imageUploadInput.value
             );
         },
-        componentWillMount: function () {
-            this.firePostProduct = firebase.database().ref('products');
-        },
+
+
         handleAdd: function (e) {
             // setting up the firebase with all the necessary fields
-            console.log("In handdle add when submitt pres")
             var date = new Date().toJSON().slice(0, 10);
-            $.post("http://localhost:4000/postItem",{
-                category: this.refs.select.value,
-                className: this.refs.classTextInput.value,
-                description: this.refs.descriptionTextInput.value,
-                professor: this.refs.professorTextInput.value,
-                price: this.refs.priceTextInput.value,
-                isbn: this.refs.isbnTextInput.value,
-                image: this.refs.imageUploadInput.value,
-                postingDate: date,
-                sellerid: '',
-                token: idToken
-            });
+            var categoryVal = this.refs.select.value;
+            var classNameVal =this.refs.classTextInput.value;
+            var descriptionVal = this.refs.descriptionTextInput.value;
+            var professorVal= this.refs.professorTextInput.value;
+            var priceVal = this.refs.priceTextInput.value;
+            var isbnVal = this.refs.isbnTextInput.value;
+            var imageVal = this.refs.imageUploadInput.value;
 
+            firebase.auth().currentUser.getToken().then(function(idToken) {
+                $.post("http://localhost:4000/postItem",{
+                    category: categoryVal,
+                    className: classNameVal,
+                    description: descriptionVal,
+                    professor: professorVal,
+                    price: priceVal,
+                    isbn: isbnVal,
+                    image: imageVal,
+                    postingDate: date,
+                    sellerid: "",
+                    token:idToken
+
+                });
+
+            });
         },
+
         handleUploadImg:function (e) {
 //            e.preventDefault();
             console.log(  $("#postForm")[0]);
@@ -331,7 +345,7 @@
         render: function () {
             return (
                     <div>
-                        <form id="postForm" action="https://sheltered-journey-42475.herokuapp.com/upload" method="post" enctype="multipart/form-data" className="creds">
+                        <form  className="creds">
                             <table className="formTable">
                                 <tbody>
                                 <tr>
