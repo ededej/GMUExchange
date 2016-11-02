@@ -58,11 +58,10 @@
             var photoURL = user.photoURL;
             var uid = user.uid;
             userName = user.uid;
-            ReactDOM.render(<AppComponent/>, document.getElementById('mountNode'));
-//            ReactDOM.render(
-//                    <AppComponent />,
-//                    document.getElementById('mountNode')
-//            );
+            ReactDOM.render(
+                    <AppComponent />,
+                    document.getElementById('mountNode')
+            );
             var providerData = user.providerData;
             user.getToken().then(function(accessToken) {
                 document.getElementById('sign-in-status').textContent = "Welcome, " + displayName;
@@ -79,13 +78,21 @@
         } else {
             console.log("Signed out");
             // User is signed out.
+
+
+
+        }
+    }, function(error) {
+        console.log(error);
+    });
+
+    //LOG IN PAGE **********************************************************************************************
+
+    var LogInPage = React.createClass({
+        componentDidMount: function()
+        {
+            console.log("We made the component!");
             $("#header").hide();
-
-//            $("#container").hide();
-//            $("#firebaseui-auth-container").hide();
-
-            // FirebaseUI config.
-            console.log("Config ");
 
             var uiConfig = {
                 'signInSuccessUrl': '/', //URL that we get sent BACK to after logging in
@@ -97,7 +104,7 @@
 //                    firebase.auth.GithubAuthProvider.PROVIDER_ID,
 //                    firebase.auth.EmailAuthProvider.PROVIDER_ID
                 ],
-            // Terms of service url.
+                // Terms of service url.
                 'tosUrl': '<your-tos-url>',
             };
             console.log("Out Config ");
@@ -106,17 +113,15 @@
             var ui = new firebaseui.auth.AuthUI(firebase.auth());
             // The start method will wait until the DOM is loaded.
             ui.start('#firebaseui-auth-container', uiConfig);
-            $("#container").hide();
-        }
-    }, function(error) {
-        console.log(error);
-    });
+            $("#sign-in-status").show();
 
-    //LOG IN PAGE **********************************************************************************************
-
-    var LogInPage = React.createClass({
+        },
         render: function () {
-            return (<form className="creds">
+            return (
+            <div>
+                <div id="firebaseui-auth-container">hi</div>
+
+                <form className="creds">
                 <table className="formTable">
                     <tbody>
                     <tr>
@@ -132,14 +137,14 @@
                             <input className="input" type="password" id="password" placeholder="Password"/>
                         </td>
                     </tr>
+
                     </tbody>
+
                 </table>
                 <button className="tableButton button" id="signUpButton">Log In</button>
-                        <div id="firebaseui-auth-container" />
-
 
                     </form>
-
+            </div>
             );
         }
     });
@@ -288,8 +293,9 @@
         },
         handleAdd: function (e) {
             // setting up the firebase with all the necessary fields
+            console.log("In handdle add when submitt pres")
             var date = new Date().toJSON().slice(0, 10);
-            $.post("https://sheltered-journey-42475.herokuapp.com/postItem",{
+            $.post("http://localhost:4000/postItem",{
                 category: this.refs.select.value,
                 className: this.refs.classTextInput.value,
                 description: this.refs.descriptionTextInput.value,
@@ -298,7 +304,8 @@
                 isbn: this.refs.isbnTextInput.value,
                 image: this.refs.imageUploadInput.value,
                 postingDate: date,
-                sellerid: ''
+                sellerid: '',
+                token: idToken
             });
 
         },
@@ -837,9 +844,7 @@
                             <li className="left" id="searchLink" onClick={this.updateSearchView}>Search</li>
                             <li className="left" id="postLink" onClick={this.updatePostView}>Post Item</li>
 
-                            {/*<li className="rightMenuLinks" id="logInLink" onClick={this.updateLogInView}>Log In</li>*/}
-
-                            <li><div id="firebaseui-auth-container" /></li>
+                            <li className="rightMenuLinks" id="logInLink" onClick={this.updateLogInView}>Log In</li>
 
                             <li className="rightMenuLinks"><div id="header">
                                 <span id="sign-in-status"></span> | <a href="javascript:firebase.auth().signOut()">Sign Out</a>

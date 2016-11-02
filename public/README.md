@@ -15,7 +15,7 @@ The four scenarios we decided on were as follows:
 
    A registered user can post a product on the site by providing its category (book, class notes, class materials, or miscellaneous), a    subcategory (dorm essentials, other) if the main category is miscellaneous, or the class name (e.g. ECE 301) and professor              otherwise. The user must then upload a photo of the product to reflect its quality, the price requested for the product, and            whether or not the price is final or negotiable. If the main category is book, the user must provide an ISBN, and the application      will then use the Amazon API to search for the market price for the book, which is also displayed to the user posting a product        before finalizing the post, and to users viewing the post.
    
-4.)Home visualization
+5.)Home visualization
 
    Users are able to see a breakdown of posted products of the current year for each month. They can hover over the categories 
    (textbooks, class notes, class materials, miscellaneous) to view how many of each has been sold by month, or they can hover over the 
