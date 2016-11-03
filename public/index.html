@@ -3,31 +3,33 @@
 <head>
     <title></title><!--title to be updated by each view-->
 
-    <link href="stylesheet.css" rel="stylesheet">
-    <link href="search.css" rel="stylesheet">
-    <link href="compatibility.css" rel="stylesheet">
-    <link href="dashBoard.css" rel="stylesheet">
-    <!--<script type = "text/javascript" src = "myjavascript.js"></script>-->
-
-    <script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <!--React without addons: <script src="https://fb.me/react-15.0.0.js"></script>-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.3.2/react-with-addons.js"></script>
     <script src="https://fb.me/react-dom-15.0.0.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/3.4.0/firebase.js"></script>
+    <!-- Firebase Auth -->
+    <script src="https://www.gstatic.com/firebasejs/ui/live/0.5/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/live/0.5/firebase-ui-auth.css" />
     <!-- ReactFire -->
     <script src="https://cdn.firebase.com/libs/reactfire/1.0.0/reactfire.min.js"></script>
+    <!--<script type = "text/javascript" src = "myjavascript.js"></script>-->
+
+    <script type = "text/javascript" src = "https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <!--D3JS-->
     <script src="https://d3js.org/d3.v3.min.js"></script>
     <script src="dashBoard.js"></script>
+    <link href="stylesheet.css" rel="stylesheet">
+    <link href="search.css" rel="stylesheet">
+    <link href="compatibility.css" rel="stylesheet">
+    <link href="dashBoard.css" rel="stylesheet">
 </head>
 <body class = "body">
+<div id="mountNode">
+    <!--Contains the rest of the website-->
+</div>
 <script type="text/babel">
-    //$(document).ready(function() {
-    //"use strict";
-    //var React = require('react');
-    //var ReactDOM = require('react-DOM');
 
     //FIREBASE *********************************************************************************************************
     "use strict";
@@ -40,31 +42,100 @@
     };
     firebase.initializeApp(config);
 
+    var userName;
+    // Initialize the FirebaseUI Widget using Firebase.
+    var ui = new firebaseui.auth.AuthUI(firebase.auth());
+    var userC;
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            console.log("Signed in");
+
+            $("#firebaseui-auth-container").hide();
+            $("#signUpLink").hide();
+            $("#logInLink").hide();
+            // User is signed in.
+            userC=user;
+            var displayName = user.displayName;
+            var email = user.email;
+            var emailVerified = user.emailVerified;
+            var photoURL = user.photoURL;
+            var uid = user.uid;
+            userName = user.uid;
+            ReactDOM.render(
+                    <AppComponent />,
+                    document.getElementById('mountNode')
+            );
+            var providerData = user.providerData;
+            user.getToken().then(function(accessToken) {
+                document.getElementById('sign-in-status').textContent = "Welcome, " + displayName;
+            });
+        } else {
+            console.log("Signed out");
+            // User is signed out.
+            $("#header").hide();
+            $("#signUpLink").show();
+            $("#firebaseui-auth-container").show();
+            $("#logInLink").show();
+        }
+    }, function(error) {
+        console.log(error);
+    });
+
     //LOG IN PAGE **********************************************************************************************
 
     var LogInPage = React.createClass({
+        componentDidMount: function() {
+            this.state = 'sdf';
+            console.log("We made the component!");
+            $("#header").hide();
+
+            var uiConfig = {
+                'signInSuccessUrl': '/', //URL that we get sent BACK to after logging in
+                'signInOptions': [
+                    // Leave the lines as is for the providers you want to offer your users.
+                    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+//                    firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+//                    firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+//                    firebase.auth.GithubAuthProvider.PROVIDER_ID,
+//                    firebase.auth.EmailAuthProvider.PROVIDER_ID
+                ],
+                // Terms of service url.
+                'tosUrl': '<your-tos-url>',
+            };
+            // The start method will wait until the DOM is loaded.
+            ui.start('#firebaseui-auth-container', uiConfig);
+            $("#sign-in-status").show();
+
+        },
         render: function () {
             return (
-                    <form className="creds">
-                        <table className="formTable">
-                            <tbody>
-                            <tr>
-                                <td>Email:</td>
-                                <td>
-                                    <input className="input" type="text" id="email" placeholder="GMU e-mail"
-                                           pattern="[a-z0-9]*@(masonlive\\.)?gmu\\.edu"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Password:</td>
-                                <td>
-                                    <input className="input" type="password" id="password" placeholder="Password"/>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <button className="tableButton button" id="signUpButton">Log In</button>
-                    </form>
+                    <div>
+                        <div id="firebaseui-auth-container"></div>
+
+                        <form className="creds">
+                            <table className="formTable">
+                                <tbody>
+                                <tr>
+                                    <td>Email:</td>
+                                    <td>
+                                        <input className="input" type="text" id="email" placeholder="GMU e-mail"
+                                               pattern="[a-z0-9]*@(masonlive\\.)?gmu\\.edu"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Password:</td>
+                                    <td>
+                                        <input className="input" type="password" id="password" placeholder="Password"/>
+                                    </td>
+                                </tr>
+
+                                </tbody>
+
+                            </table>
+                            <button className="tableButton button" id="signUpButton">Log In</button>
+
+                        </form>
+                    </div>
             );
         }
     });
@@ -120,11 +191,11 @@
         // adding the user account into firebase
         handleAdd: function (e) {
             $.post("https://sheltered-journey-42475.herokuapp.com/singUp",{
-                                FirstName: this.refs.fName.value,
-                                LastName: this.refs.lName.value,
-                                Email: this.refs.email.value,
-                                Password: this.refs.password.value
-                            });
+                FirstName: this.refs.fName.value,
+                LastName: this.refs.lName.value,
+                Email: this.refs.email.value,
+                Password: this.refs.password.value
+            });
         },
         //render function
         render: function () {
@@ -185,6 +256,8 @@
             );
         }
     });
+
+
     //POST A PRODUCT PAGE **********************************************************************************************
     var ProductRegistration = React.createClass({
         //http://stackoverflow.com/questions/29108779/how-to-get-selected-value-of-a-dropdown-menu-in-reactjs
@@ -194,10 +267,12 @@
             };
         },
         mixins: [ReactFireMixin],
-
+        componentWillMount: function () {
+            this.fireRef = firebase.database().ref('users').child(userName);
+        },
         handleChange: function () {
             this.props.onUserInput(
-                    this.setState({value: event.target.value}),//this.refs.categorySelection.value,
+                    this.setState({value: event.target.value}),
                     this.refs.descriptionTextInput.value,
                     this.refs.classTextInput.value,
                     this.refs.professorTextInput.value,
@@ -206,25 +281,37 @@
                     this.refs.imageUploadInput.value
             );
         },
-        componentWillMount: function () {
-            this.firePostProduct = firebase.database().ref('products');
-        },
+
+
         handleAdd: function (e) {
             // setting up the firebase with all the necessary fields
             var date = new Date().toJSON().slice(0, 10);
-            $.post("https://sheltered-journey-42475.herokuapp.com/postItem",{
-                category: this.refs.select.value,
-                className: this.refs.classTextInput.value,
-                description: this.refs.descriptionTextInput.value,
-                professor: this.refs.professorTextInput.value,
-                price: this.refs.priceTextInput.value,
-                isbn: this.refs.isbnTextInput.value,
-                image: this.refs.imageUploadInput.value,
-                postingDate: date,
-                sellerid: ''
-            });
+            var categoryVal = this.refs.select.value;
+            var classNameVal =this.refs.classTextInput.value;
+            var descriptionVal = this.refs.descriptionTextInput.value;
+            var professorVal= this.refs.professorTextInput.value;
+            var priceVal = this.refs.priceTextInput.value;
+            var isbnVal = this.refs.isbnTextInput.value;
+            var imageVal = this.refs.imageUploadInput.value;
 
+            firebase.auth().currentUser.getToken().then(function(idToken) {
+                $.post("http://localhost:4000/postItem",{
+                    category: categoryVal,
+                    className: classNameVal,
+                    description: descriptionVal,
+                    professor: professorVal,
+                    price: priceVal,
+                    isbn: isbnVal,
+                    image: imageVal,
+                    postingDate: date,
+                    sellerid: "",
+                    token:idToken
+
+                });
+
+            });
         },
+
         handleUploadImg:function (e) {
 //            e.preventDefault();
             console.log(  $("#postForm")[0]);
@@ -247,13 +334,9 @@
         },
 
         render: function () {
-            /*console.log('cat: ' + this.props.categorySelection + 'desc: '+ this.props.descriptionText +
-             ' class: ' + this.props.classText + ' professor:' + this.props.professorText +
-             ' price: ' +this.props.priceText + 'isbn: ' + this.props.isbnText +
-             ' image: ' + this.props.imageUpload);*/
             return (
                     <div>
-                        <form id="postForm" action="https://sheltered-journey-42475.herokuapp.com/upload" method="post" enctype="multipart/form-data" className="creds">
+                        <form  className="creds">
                             <table className="formTable">
                                 <tbody>
                                 <tr>
@@ -327,14 +410,14 @@
                                     <td>Image:</td>
                                     <td>
                                         <input
-                                            className="input"
-                                            type="file"
-                                            name="img"
-                                            value={this.props.imageUpload}
-                                            ref="imageUploadInput"
-                                            onChange={this.handleUploadImg}
-                                            id="productSubmissionFile"
-                                    />
+                                                className="input"
+                                                type="file"
+                                                name="img"
+                                                value={this.props.imageUpload}
+                                                ref="imageUploadInput"
+                                                onChange={this.handleUploadImg}
+                                                id="productSubmissionFile"
+                                        />
                                         <input type="button" ref="button" value="Upload" />
 
                                     </td>
@@ -442,7 +525,6 @@
             var price = parseFloat(this.props.filterPriceMax);
             //var date = this.props.filterDate;
             this.props.items.forEach(function (item) {
-                //console.log('id: '+item.id);
                 var keywordRegex = new RegExp('');
                 var classNameRegex = new RegExp('');
                 var professorRegex = new RegExp('');
@@ -476,7 +558,6 @@
                 if (item.professor != null) {
                     professorMatch = professorRegex.exec(item.professor.toLowerCase());
                 }
-                //console.log(keywordMatch+classNameMatch+professorMatch);
                 if ((keywordMatch != null && keywordMatch.length > 0) &&
                         (price > parseFloat(item.price) &&
                                 ( (item.category == "Miscellaneous" && className == '' && professor == '') ||
@@ -535,7 +616,6 @@
             //var _this = this; //view-source:https://gmu-swe432.github.io/lecture10demos/public/06bonusreact/
             var filtersActive = [];
             var filtersCurrent = [{name: 'Keyword', value: this.props.filterKeywordText, active: true},
-                {name: 'Category', value: this.props.filterCategory, active: true},
                 {name: 'Class', value: this.props.filterClassText, active: true},
                 {name: 'Professor', value: this.props.filterProfessorText, active: true},
                 {name: 'Max Price', value: '$' + this.props.filterPriceMax, active: true},
@@ -572,7 +652,6 @@
                             <table className="searchBoxTable">
                                 <thead>
                                 <tr>
-                                    <td>Category</td>
                                     <td>Class</td>
                                     <td>Professor</td>
                                     <td>Maximum Price</td>
@@ -581,13 +660,6 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                    <td><select name="searchTermSelection">
-                                        <option name="category" value="All">All</option>
-                                        <option name="category" value="Textbook">Textbook</option>
-                                        <option name="category" value="Class Notes">Class Notes</option>
-                                        <option name="category" value="Class Materials">Class Materials</option>
-                                        <option name="category" value="Miscellaneous">Miscellaneous</option>
-                                    </select></td>
                                     <td><input
                                             className="input"
                                             type="text"
@@ -700,17 +772,18 @@
                         <table>
                             <tbody>
                             <tr>
-                                <td><h3>Feature 1</h3>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                <td><h3>Browse for items</h3>Are you looking for <b>class materials</b> like textbooks or
+                                    class notes? Are you looking for <b>miscellaneous items</b> like lamps or backpacks?
+                                    Browse your peers' listings to find what you're looking for, and filter by price,
+                                    class, professor, and more.
                                 </td>
-                                <td><h3>Feature 2</h3>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                <td><h3>Post items</h3>Do you have something you would like to give away or sell? Whether
+                                    it's an old textbook, or a chair that you don't want to haul back home, list your items
+                                    and rest assured that only your GMU peers can contact you.
                                 </td>
-                                <td><h3>Feature 3</h3>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                    eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                                <td><h3>User connection</h3>Once a buyer has decided to purchase an item from
+                                    a listing, we connect the buyer to the seller and let the two parties decide payment
+                                    and logistical details.
                                 </td>
                             </tr>
                             </tbody>
@@ -756,10 +829,15 @@
                             <li className="left" id="homeLink" onClick={this.updateHomeView}>Home</li>
                             <li className="left" id="searchLink" onClick={this.updateSearchView}>Search</li>
                             <li className="left" id="postLink" onClick={this.updatePostView}>Post Item</li>
+
                             <li className="rightMenuLinks" id="logInLink" onClick={this.updateLogInView}>Log In</li>
+
+                            <li className="rightMenuLinks">
+                                <div id="header">
+                                    <span id="sign-in-status" /> | <a href="javascript:firebase.auth().signOut()">Sign Out</a>
+                                </div>
+                            </li>
                             <li className="rightMenuLinks" id="signUpLink" onClick={this.updateSignUpView}>Sign Up</li>
-                            <li id="logOut">Log Out</li>
-                            <li><span id="userName"></span></li>
                         </ul>
                     </nav>
             );
@@ -796,10 +874,11 @@
         render: function () {
             return (
                     <div className="mainHeading">
-                        <h1 className="title">GMU Exchange</h1>
-                        <h2 className="subtitle">Tagline</h2>
+                        <h1 className="title">GMUExchange</h1>
+                        <h2 className="subtitle">Peer to peer exchange for George Mason students</h2>
                         <table className="quickLogin">
                             <tbody>
+
                             <tr>
                                 <th><input className="input" type="email" placeholder="GMU e-mail" id="quickLoginEmail"/>
                                 </th>
@@ -810,6 +889,7 @@
                                 <td colSpan="2">
                                     <button className="button" id="quickLoginButton">Log In</button>
                                 </td>
+
                             </tr>
                             </tbody>
                         </table>
@@ -968,10 +1048,6 @@
 
 
 </script>
-<div id="mountNode">
-    <!--Contains the rest of the website-->
 
-</div>
 </body>
 </html>
-
