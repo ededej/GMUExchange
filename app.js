@@ -55,9 +55,9 @@ app.post('/singUp', function (req, res) {
                 });
         }
     }).catch(function(){
-            res.status(403);
-            res.send();
-        });
+        res.status(403);
+        res.send();
+    });
 });
 
 //Posting a new item in firebase products
@@ -69,21 +69,32 @@ app.post('/postItem', function (req, res) {
         + req.body.description + " \n"
         + req.body.price + " \n"
         + req.body.postingDate +" \n"
+        + req.body.sellerid +" \n"
     );
-    firePostProduct.push(
-        {
-            category: req.body.category,
-            className: req.body.className,
-            description: req.body.description,
-            professor: req.body.professor,
-            price: req.body.price,
-            isbn: req.body.isbn,
-            image: req.body.image,
-            postingDate: req.body.postingDate,
-            sellerid: ''
-    }).catch(function(){
-        res.status(403);
-        res.send();
+    var idToken = req.body.token;
+
+    firebase.auth().verifyIdToken(idToken).then(function (decodedToken) {
+        var uid = decodedToken.uid;
+        var email = decodedToken.email;
+        console.log("Uid: " + uid);
+        console.log("Email: " + email);
+        // firePostProduct will post the product for each uid on the same category
+        // so the same user will have different products post.
+        firePostProduct.child(uid).push(
+            {
+                category: req.body.category,
+                className: req.body.className,
+                description: req.body.description,
+                professor: req.body.professor,
+                price: req.body.price,
+                isbn: req.body.isbn,
+                image: req.body.image,
+                postingDate: req.body.postingDate,
+                sellerId: email
+            }).catch(function(){
+            res.status(403);
+            res.send();
+            });
     });
 });
 
@@ -98,8 +109,8 @@ app.get('/signUp/', function(req, res){
 app.get('/logIn/', function(req, res){
 });
 //update URI to display postItem page
-app.get('/postItem/', function(req, res){
-});
+// app.get('/postItem/', function(req, res){
+// });
 //update URI to display product ID, category
 app.get('/category/:category/:id/', function(req, res){
     res.json({"id": req.params.id},{"category":req.params.category});

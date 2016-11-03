@@ -23,28 +23,28 @@ $(document).ready(function () {
         , {Month: 'Dec', freq: {textbooks: 0, classNotes: 0, classMaterials: 0, misc: 0}}
     ];
     var fireRead = firebase.database().ref('products');
-
-    fireRead.on("value",function (snapshot) {
-        snapshot.forEach(function(childSnapshot) {
-            var childData = childSnapshot.val();
-            var date=childData.postingDate;
-            var d=date.split("-");
-            var d=d[1];
-            var month=monthNames[d-1];
-            // console.log(month);
-            if (childData.category==="textbook"){
-                var priceStrign=childData.price;
-                textbookTotal[d]+=parseInt(priceStrign);
-                // console.log(textbookTotal[d]);
-            }else if (childData.category==="classNotes"){
-                // console.log(childData.description);
-            }else if (childData.category==="classMaterials"){
-                // console.log(childData.description);
-            }else{
-                // console.log(childData.description);
-            }
-        });
-    });
+    //
+    // fireRead.on("value",function (snapshot) {
+    //     snapshot.forEach(function(childSnapshot) {
+    //         var childData = childSnapshot.val();
+    //         var date=childData.postingDate;
+    //         var d=date.split("-");
+    //         var d=d[1];
+    //         var month=monthNames[d-1];
+    //         // console.log(month);
+    //         if (childData.category==="textbook"){
+    //             var priceStrign=childData.price;
+    //             textbookTotal[d]+=parseInt(priceStrign);
+    //             // console.log(textbookTotal[d]);
+    //         }else if (childData.category==="classNotes"){
+    //             // console.log(childData.description);
+    //         }else if (childData.category==="classMaterials"){
+    //             // console.log(childData.description);
+    //         }else{
+    //             // console.log(childData.description);
+    //         }
+    //     });
+    // });
 
     var freqData = [
         {Month: 'Jan', freq: {textbooks: 120, classNotes: 20, classMaterials: 17, misc: 50}}
