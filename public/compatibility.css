@@ -69,6 +69,9 @@
         display: table-cell;
         text-align: center;
     }
+    #menuSearchBox{
+        width: 525px;
+    }
 }
 /*COMPUTER: FULL SCREEN*/
 @media screen and (min-width: 1400px) { /*http://www.w3schools.com/cssref/css3_pr_mediaquery.asp*/
@@ -76,9 +79,9 @@
         top: 0%;
         font-size: 60px;
     }
-    /*.searchResultTable {
-        min-height: 350px;
-    }*/
+    #menuSearchBox{
+        width: 1550px;
+    }
     .mainHeading .table, .quickLogin{
         padding-left: 35%;
         padding-right: 35%;
