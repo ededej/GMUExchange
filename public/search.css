@@ -45,3 +45,8 @@
 .activeFilterDeselecter {
     font-weight: bold;
 }
+
+#menuSearchBox:hover{
+    background-color: green;
+    color: white;
+}
