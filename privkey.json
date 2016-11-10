@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "gmuexchange",
+  "private_key_id": "aa441656d3aba5bf3a6a297a130e39e535791e3c",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDcz9T2VECQKhpW\nEuZVW9vVKv2gtVprupXYtoWTrEK1V7G0+Vjng1UxZG4hENmBWWWxscNwqxC13QEQ\nq63ME5hc6UtjIhDgd+cFpJ9dVVzWgUHj9n67KA/S27tSBYXzvcOEPn08oAWCkzSF\nngjudx+3TP/u+HGNEbENDXxnuwRwmlLoksfq37mp+Fse+Sk6bzDQrGe+jyXkSSSG\nAriiOdes7ruOxUpi6LWgXtuBk1Nnp/GHD97sKTAp1gtF4sdqrcpjeKLEgLlgZKUe\ny2bqevTep2lB3rkfP5QUdMM2a7yx8Kscb7GLUOmfpIvvDpiWFKtr5GBSt6yTfU7G\nOZ/PZHVRAgMBAAECggEBAKuL33R8IiiePRWv2zhnhBNJMf//xL67F51kt8PxaWX/\nOjVSHorGUpJr5s9Titdd/46cfyzyCapwh1pPNle8xXsxV/stRRVOsbGForXdEqIn\ni2wyXWTDi/+R7Cad2eJyBAqijaNi4sT93ikMjP3OmFpMvO0IIReqrfVpC8R+28Up\n/caHB9TY90kSc4HV00x/sUclKtlECcFzD/jf0KOCkKFgFXOAawxvjtyp3xczPkcX\n3aZg1xwXiax/aPOckIRA6xUjxPZbwoH6UeqwcuM+iNVOWxsKLCkdOoLythGKqADo\nUgSJJrZKOJP8xSEOD+Qs6fgNR+Jun4Zl6O099BNapZ0CgYEA+7adLiTp02pT/PHM\n68E4LLHsnoDiPfLqiswKIHrcHNsUsNPsSnZbPZw1Sk3jnfLK6+vKWrvTRCtd6cTn\n+pTgOKGtgfajd00tGcLtq4LHFOpBtuUFN+R64MAU+yLfOWryTRU1AivTsn4D00i2\nqlfyiKz9ppoMLSgWhyBZuaGX1fMCgYEA4JJ/aoAxddUpIQUEg2lC2mTG2G2kms5Y\ncbGlUsF/gdANmtQ9Wb1d7sa2Ll8UzJQZ/hk4XZ/eRFh8IsvA2hhKelyKZGzHv8GH\nMsK4yyY2AkGkKts/L06fNrXD4O73dJKZDHcGlCoSdjdq2IcxsrXLn5nS2aP2TKBv\nPD2+3mJMRKsCgYEAtbAtqmYYpXLFZvn+KVnRu2k+W3a6V27k3wTCdolYIjf8qlp9\n342o9EKxsI2iM5tR35LWAEI9D6Kh6iAoNhaJ9ja1b+7gNTfuyv6J4VfHbZBdmK+c\n4ag5Dct4GYIlUGOivAMHvSZ3awpMppCA0VokBYWgnUXqbhnWkPjH6xb56wMCgYAu\nMBNCrUD+8it2XhjSiki0sDtxcgODz2LDZ30QKzn1UfwqVvKTTW5PWNFJckbN2LwL\n1dYQ83t8ZRKK+YsdkBdpWTUheHoQx1XuK7xkE+TRy/xe0B8LtMjsMLAryBpfAHO3\n65cPzCNl6vnvtMaU8e0CU1nZZ26Vzf1yz2Q9SsxS5wKBgQCvrMkRKjNkIqHCt+n9\nTH9+NZAd1k1tRAQku7pf9a3YWX9SDnYgs+2xvXiGdK6nDEwIpWrYdU9JUWuj/o0H\nhsub0uyEElsMcyVEn8Hy4N7r7sXXF+G9S5Zgtp7I5WUTtgK81EHeQqdz1oL2i1mt\n4vARJcUILRJC/xZqiZ1R+aylZw==\n-----END PRIVATE KEY-----\n",
+  "client_email": "service-gmuexchange@gmuexchange.iam.gserviceaccount.com",
+  "client_id": "114568868426314553288",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/service-gmuexchange%40gmuexchange.iam.gserviceaccount.com"
+}
