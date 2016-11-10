@@ -68,6 +68,15 @@
             var providerData = user.providerData;
             user.getToken().then(function(accessToken) {
                 document.getElementById('sign-in-status').textContent = "Welcome, " + displayName;
+                document.getElementById('account-details').textContent = JSON.stringify({
+                    displayName: displayName,
+                    email: email,
+                    emailVerified: emailVerified,
+                    photoURL: photoURL,
+                    uid: uid,
+                    accessToken: accessToken,
+                    providerData: providerData
+                }, null, '  ');
             });
         } else {
             console.log("Signed out");
@@ -85,7 +94,6 @@
 
     var LogInPage = React.createClass({
         componentDidMount: function() {
-            this.state = 'sdf';
             console.log("We made the component!");
             $("#header").hide();
 
@@ -102,7 +110,6 @@
                 // Terms of service url.
                 'tosUrl': '<your-tos-url>',
             };
-            // The start method will wait until the DOM is loaded.
             ui.start('#firebaseui-auth-container', uiConfig);
             $("#sign-in-status").show();
 
@@ -153,7 +160,6 @@
                 matchPwd: '',
                 lengthPwd:'',
                 validateEmail:''
-
             };
             this.checkPassword = this.checkPassword.bind(this);
 
@@ -166,7 +172,6 @@
         handleChange: function (event) {
             if (this.refs.password.value !== this.refs.confirmPwd.value) {
                 console.log("Not valid");
-
             } else {
                 console.log("valid");
 
@@ -175,14 +180,11 @@
 
         // Checking if the user put the same password on both fields
         checkPassword: function (event) {
-
             if (this.refs.password.value !== this.refs.confirmPwd.value) {
                 this.setState({matchPwd: "Passwords don't match"});
             } else {
                 this.setState({matchPwd: ""});
             }
-
-
         },
         //Checking for the length of password
         checkPwdLength:function (event) {
@@ -330,8 +332,9 @@
                     this.refs.imageUploadInput.value
             );
         },
-
-
+        /*componentWillMount: function () {
+            this.firePostProduct = firebase.database().ref('products');
+        },*/
         handleAdd: function (e) {
             // setting up the firebase with all the necessary fields
             var date = new Date().toJSON().slice(0, 10);
@@ -360,7 +363,6 @@
 
             });
         },
-
         handleUploadImg:function (e) {
 //            e.preventDefault();
             console.log(  $("#postForm")[0]);
@@ -552,9 +554,16 @@
         }
     });
 
-    // onClick functionality: http://stackoverflow.com/questions/33846682/react-onclick-function-fires-on-render
-    // removeItem functionality: view-source:https://gmu-swe432.github.io/lecture10demos/public/06bonusreact/
-    // <button className = "activeFilterDeselecter" onClick={() => {_this.props.removeItem(this.props.filter)}}>x</button>
+    var NoResults = React.createClass({
+        render: function () {
+            return (
+                    <tr>
+                        <td colSpan="6">{this.props.description}</td>
+                    </tr>
+            );
+        }
+    });
+
     var ActiveFilters = React.createClass({
         render: function () {
             return (
@@ -568,6 +577,7 @@
     var SearchResultsTable = React.createClass({
         render: function () {
             var rows = [];
+            var itemsFound = 0;
             var keyword = this.props.filterKeywordText;
             var className = this.props.filterClassText;
             var professor = this.props.filterProfessorText;
@@ -612,7 +622,7 @@
                                 ( (item.category == "Miscellaneous" && className == '' && professor == '') ||
                                 ((classNameMatch != null && classNameMatch.length > 0) && professorMatch != null))
                         )) {
-                    //console.log('item pushed');
+                    itemsFound++;
                     rows.push(<Results image={item.image}
                                        description={item.description}
                                        className={item.className}
@@ -622,6 +632,10 @@
                                        key={item.id}/>);
                 }
             }.bind(this));
+            if(itemsFound == 0){
+                rows.push(<NoResults description={"No results found"}
+                                     key={"empty"}/>);
+            }
             return (
                     <div className="search" data-list-size="4">
                         <table className="searchResultTable">
@@ -764,8 +778,9 @@
 
     var FilterableSearchPage = React.createClass({
         getInitialState: function () {
+            var keyword = this.props.kw;
             return {
-                filterKeywordText: '',
+                filterKeywordText: keyword,
                 filterCategory: 'All',
                 filterClassText: '',
                 filterProfessorText: '',
@@ -784,7 +799,6 @@
             });
         },
         render: function () {
-            //console.log(this.props.items);
             return (
                     <div>
                         <SearchBox
@@ -846,6 +860,16 @@
     //REUSED ITEMS
     //last li element to be defined as username after successful login
     var Menu = React.createClass({
+        handleChange: function () {
+            this.props.onUserInput(
+                    this.refs.menuSearchBoxFieldInput.value,
+            );
+        },
+        enter: function(event){
+            if(event.keyCode == 13){
+                this.updateSearchView();
+            }
+        },
         updateHomeView: function () {
             this.props.updateHomeView(
                     "Home"
@@ -876,11 +900,16 @@
                     <nav className="menu">
                         <ul>
                             <li className="left" id="homeLink" onClick={this.updateHomeView}>Home</li>
-                            <li className="left" id="searchLink" onClick={this.updateSearchView}>Search</li>
                             <li className="left" id="postLink" onClick={this.updatePostView}>Post Item</li>
-
+                            <li className="left" id="menuSearchBox">
+                                <input type="text" placeholder="Search by keyword"
+                                       id="menuSearchBoxField"
+                                       onChange={this.handleChange}
+                                       onKeyDown={this.enter}
+                                       ref="menuSearchBoxFieldInput"/>
+                            </li>
+                            <li className="left" id="searchLink" onClick={this.updateSearchView}>Search</li>
                             <li className="rightMenuLinks" id="logInLink" onClick={this.updateLogInView}>Log In</li>
-
                             <li className="rightMenuLinks">
                                 <div id="header">
                                     <span id="sign-in-status" /> | <a href="javascript:firebase.auth().signOut()">Sign Out</a>
@@ -901,6 +930,7 @@
                         <p>Dayana Hudson</p>
                         <p>Ermal Dedej</p>
                         <p><a href="https://github.com/dayanahudson/GMUExchange/">GitHub</a></p>
+                        Debug: <span id="account-details" />
 
                     </footer>
             );
@@ -954,8 +984,14 @@
     var AppComponent = React.createClass({
         getInitialState: function () {
             return {
-                view: 'Home'
+                view: 'Home',
+                menuFilterKeywordText: ''
             }
+        },
+        handleUserInput: function (menuFilterKeywordText) {
+            this.setState({
+                menuFilterKeywordText: menuFilterKeywordText,
+            });
         },
         updateCurrentView: function (view) {
             this.setState({
@@ -970,6 +1006,7 @@
                         updatePostView={this.updateCurrentView}
                         updateSignUpView={this.updateCurrentView}
                         updateLogInView={this.updateCurrentView}
+                        onUserInput={this.handleUserInput}
                 /><MainHeading /><HomePage items={ITEMS}/><Footer /></div>);
             }
             else if (this.state.view == 'Search') {
@@ -979,7 +1016,10 @@
                         updatePostView={this.updateCurrentView}
                         updateSignUpView={this.updateCurrentView}
                         updateLogInView={this.updateCurrentView}
-                /><SectionHeading subtitle={this.state.view}/><FilterableSearchPage items={ITEMS}/><Footer /></div>);
+                        onUserInput={this.handleUserInput}
+                /><SectionHeading subtitle={this.state.view}/><FilterableSearchPage
+                        items={ITEMS}
+                        kw={this.state.menuFilterKeywordText}/><Footer /></div>);
             }
             else if (this.state.view == 'Post New Item') {
                 return (<div><Menu
@@ -1096,8 +1136,6 @@
             document.getElementById('mountNode')
     );
 
-
 </script>
-
 </body>
 </html>
